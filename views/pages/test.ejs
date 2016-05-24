@@ -2,6 +2,13 @@
 <html>
 <head>
   <% include ../partials/header.ejs %>
+  
+  
+  <script>
+    $(function(){
+        $('#download').style.display = none;
+    });
+    </script>
 </head>
 
 <body>
@@ -11,6 +18,11 @@
 <div class="container">
 <h2>Test Page</h2>
 
+</div>
+
+<div class="container">
+    <iframe src="pdfFiles/temp.pdf#toolbar=0" width="600" height="500"></iframe>
+    <!--<object data="pdfFiles/temp.pdf" width="600" height="500"></object>-->
 </div>
 
 </body>
