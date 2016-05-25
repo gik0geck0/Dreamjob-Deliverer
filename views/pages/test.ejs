@@ -3,11 +3,7 @@
 <head>
 	<% include ../partials/header.ejs %>
 	
-	<script>
-		$(function(){
-				$('#download').style.display = none;
-		});
-	</script>
+	<script type="text/javascript" src="/scripts/main.js"></script>
 </head>
 
 <body>
@@ -16,32 +12,32 @@
 	<h2 style="text-align:center; padding:10px;">&lt;&lt;test name here&gt;&gt;</h2>
 	
 	<div class="row" style="min-height:64px">
-		<div class="col-sm-2"></div>
+		<div class="col-md-2"></div>
 		
-		<div class="col-sm-4">
+		<div class="col-sm-6 col-md-4">
 			<!-- Upload field and button -->
-			<form class="form" role="form" id="test_submission">
+			<form class="form" role="form" name="test_form" id="test_form">
 				<div class="input-group input-group-lg">
 					<label class="input-group-btn">
 						<span class="btn btn-default">
 							Browse
-							<input class="form-control-static" type="file" style="display:none" required />
+							<input class="form-control-static" type="file" id="select_file" style="display:none" required />
 						</span>
 					</label>
-					<input class="form-control" type="text" readonly />
+					<input class="form-control" type="text" id="file_name" value="Select a file to upload" readonly />
 					
 					<span class="input-group-btn">
-						<button class="btn btn-primary" type="submit" for="#test_submission">Submit</button>
+						<button class="btn btn-primary" type="submit">Submit</button>
 					</span>
 				</div>
 			</form>
 		</div>
 		
-		<div class="col-sm-4">
+		<div class="col-sm-6 col-md-4">
 			<!-- Time remaining -->
 			<div>
 				<div style="float:right">
-					<button class="btn btn-warning btn-lg" data-toggle="collapse" data-target="#time_remaining">Time Remaining</button>
+					<button class="btn btn-warning btn-lg" id="time_button" data-toggle="collapse" data-target="#time_remaining">Time Remaining</button>
 				</div>
 				<div id="time_remaining" class="collapse input-lg" style="float:right; text-align:right; vertical-align:middle;">
 					<!-- time here -->
@@ -51,37 +47,41 @@
 			</div>
 		</div>
 		
-		<div class="col-sm-2"></div>
+		<div class="col-md-2"></div>
 	</div>
 	
 	<div class="row">
-		<div class="col-sm-2"></div>
+		<div class="col-md-2"></div>
 		
-		<div class="col-sm-8">
+		<div class="col-sm-12 col-md-8">
 			<!-- Upload success -->
 			<div class="alert alert-success fade in" hidden>
 				<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-				<strong>Success!</strong> The file &lt;&lt;filename here&gt;&gt; uploaded successfully.
+				<strong>Success!</strong> The file &lt;&lt;filename here&gt;&gt; uploaded successfully.<br/>You can always submit again if necessary.
+			</div>
+			<div class="alert alert-danger fade in" hidden>
+				<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<strong>Fail!</strong> Select a file before submitting.
 			</div>
 		</div>
 		
-		<div class="col-sm-2"></div>
+		<div class="col-md-2"></div>
 	</div>
 	
 	<hr />
 	
 	<div class="row">
-		<div class="col-sm-2"></div>
+		<div class="col-md-2"></div>
 		
-		<div class="col-sm-8">
+		<div class="col-sm-12 col-md-8">
 			<!-- Test PDF display -->
 			<div class="embed-responsive embed-responsive-16by9" id="pdf_viewport">
-				<iframe src="/pdfFiles/temp.pdf#toolbar=0" width="100%" height="100%"></iframe>
+				<embed src="/pdfFiles/temp.pdf#toolbar=0" width="100%" height="100%"></embed>
 				<!-- <object data="pdfFiles/temp.pdf" width="600" height="500"></object> -->
 			</div>
 		</div>
 		
-		<div class="col-sm-2"></div>
+		<div class="col-md-2"></div>
 	</div>
 </div>
 
