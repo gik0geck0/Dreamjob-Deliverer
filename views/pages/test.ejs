@@ -3,10 +3,12 @@
 <head>
 	<% include ../partials/header.ejs %>
 	
-	<script type="text/javascript" src="/scripts/main.js"></script>
+	<script type="text/javascript" src="/scripts/build/pdf.js"></script>
+	<script type="text/javascript" src="/scripts/build/pdf.worker.js"></script>
+	<script type="text/javascript" src="/scripts/candidate.js"></script>
 </head>
 
-<body>
+<body oncontextmenu="return false;">
 
 <div class="container-fluid">
 	<h2 style="text-align:center; padding:10px;">&lt;&lt;test name here&gt;&gt;</h2>
@@ -75,10 +77,12 @@
 		
 		<div class="col-sm-12 col-md-8">
 			<!-- Test PDF display -->
-			<div class="embed-responsive embed-responsive-16by9" id="pdf_viewport">
+			<!-- <div class="embed-responsive embed-responsive-16by9" id="pdf_viewport" hidden>
 				<embed src="/pdfFiles/temp.pdf#toolbar=0" width="100%" height="100%"></embed>
-				<!-- <object data="pdfFiles/temp.pdf" width="600" height="500"></object> -->
-			</div>
+			</div> -->
+            
+            <canvas id="pdf_canvas" width="100%" height="100%"></canvas>
+            
 		</div>
 		
 		<div class="col-md-2"></div>
