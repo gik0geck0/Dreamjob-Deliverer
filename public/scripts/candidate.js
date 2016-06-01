@@ -1,10 +1,56 @@
+var currPage = 1;
+var numPages = 0;
+var thePDF = null;
+var pdfScale = 1;
+
+PDFJS.disableStream = true;
+
+$(window).on('load', function() {
+	//TODO: set pdfScale based on screen size?
+	
+	//TODO: we have to get the path from the db via GET or POST or something?
+	PDFJS.getDocument('../pdfFiles/12HoleFinalPDF.pdf').then(function(pdf) {
+		thePDF = pdf;
+		
+		numPages = pdf.numPages;
+		
+		pdf.getPage(currPage).then(handlePages);
+	});
+});
+
+function handlePages(page) {
+	var viewport = page.getViewport(pdfScale);
+
+	var canvas = document.createElement('canvas');
+	var context = canvas.getContext('2d');
+	canvas.height = viewport.height;
+	canvas.width = viewport.width;
+
+	var renderContext = {
+		canvasContext: context,
+		viewport: viewport
+	};
+	
+	//Draw it on the canvas
+	page.render(renderContext);
+	
+	//Add it to the web page
+	document.getElementById('pdf_div').appendChild(canvas);
+	
+	//Move to next page
+	currPage++;
+	if (thePDF != null && currPage <= numPages) {
+		thePDF.getPage(currPage).then(handlePages);
+	}
+}
+
 $(document).ready(function(){
 	$('#file_name').click(function(){
 		$('#select_file').click();
 	});
 	
 	$('#select_file').change(function(){
-		var filename = $('#select_file').val().split('\\').pop().split('/').pop() || "Select a file to upload";
+		var filename = $('#select_file').val().split('\\').pop().split('/').pop() || 'Select a file to upload';
 		$('#file_name').val(filename);
 	});
 	
@@ -30,12 +76,12 @@ function initializeClock(id, endtime){
 	var clock = document.getElementById(id);
 	var timeinterval = setInterval(function(){
 		var t = getTimeRemaining(endtime);
-		var remaining = "";
+		var remaining = '';
 		if (t.days > 0) remaining += t.days + 'd ';
 		if (t.hours > 0) remaining += t.hours + 'h ';
 		remaining += t.minutes + 'm ' + t.seconds + 's ';
 		if (t.total <= 0) {
-			remaining = "Ended";
+			remaining = 'Ended';
 			$('#time_button').addClass('btn-danger').removeClass('btn-warning');
 		}
 		clock.innerHTML = remaining;
@@ -47,46 +93,13 @@ function initializeClock(id, endtime){
 
 //Let's try pdf stuff
 if (!window.requestAnimationFrame) {
-    window.requestAnimationFrame = (function() {
-    return window.webkitRequestAnimationFrame ||
-        window.mozRequestAnimationFrame ||
-        window.oRequestAnimationFrame ||
-        window.msRequestAnimationFrame ||
-        function(callback, element) {
-            window.setTimeout(callback, 1000 / 60);
-        };
-    })();
+	window.requestAnimationFrame = (function() {
+		return window.webkitRequestAnimationFrame ||
+			window.mozRequestAnimationFrame ||
+			window.oRequestAnimationFrame ||
+			window.msRequestAnimationFrame ||
+			function(callback, element) {
+				window.setTimeout(callback, 1000 / 60);
+			};
+	})();
 }
-
-PDFJS.disableStream = true;
-
-
-//TODO: we have to get the path via GET or POST or something?
-PDFJS.getDocument('../pdfFiles/temp.pdf').then(function(pdfFile) {
-    
-    var pageNumber = 1;
-    pdfFile.getPage(pageNumber).then(function(page) {
-        var scale = 1.5;
-        var viewport = page.getViewport(scale);
-
-        var canvas = document.getElementById('pdf_canvas');
-        var context = canvas.getContext('2d');
-        canvas.height = viewport.height;
-        canvas.width = viewport.width;
-
-        var renderContext = {
-          canvasContext: context,
-          viewport: viewport
-        };
-        page.render(renderContext);
-    });
-});
-
-
-
-
-
-
-
-
-
