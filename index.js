@@ -26,6 +26,10 @@ app.get('/test', function(request, response) {
 app.get('/admin', function(request, response) {
 	response.render('pages/admin');
 });
+    
+app.get('/schedule', function(request, response) {
+	response.render('pages/schedule');
+});
 
 app.get('/cool', function(request, response) {
 	response.send(cool());
