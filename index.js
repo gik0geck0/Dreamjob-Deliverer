@@ -19,6 +19,10 @@ app.get('/create', function(request, response) {
 	response.render('pages/create');
 });
 
+app.get('/schedule', function(request, response) {
+	response.render('pages/schedule');
+});
+
 app.get('/cool', function(request, response) {
 	response.send(cool());
 });
