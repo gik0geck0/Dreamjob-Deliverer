@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<% include ../partials/header.ejs %>
+</head>
+
+<body oncontextmenu="return false;">
+
+<div class="container-fluid">
+	<h2 style="text-align:center; padding:10px;">&lt;&lt;Create Test&gt;&gt;</h2>
+
+	<!-- Upload field and button -->
+	<form class="form" role="form" name="test_form" id="test_form">
+		<div class="form-group form-group-lg">
+			<label for="title"> Title:</label>
+			<input type="text" class="form-control" name="title" id="title"><br>
+		</div>
+		<div class="input-group input-group-lg">
+			<label class="input-group-btn">
+				<span class="btn btn-default">
+					Browse
+					<input class="form-control-static" type="file" id="select_file" style="display:none" required />
+				</span>
+			</label>
+			<input class="form-control" type="text" id="file_name" value="Select an instructions file to upload" readonly />			
+				<span class="input-group-btn">
+					<button class="btn btn-primary" type="submit">Submit</button>
+				</span>
+				<br>
+		</div>
+		<div class="form-group form-group-lg">
+			<label for="description"> Description:</label>
+			<input type="text" class="form-control" name="description" id="description"><br>
+		</div>
+	</form>
+	
+</div>
+
+</body>
+</html>
