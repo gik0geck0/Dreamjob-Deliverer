@@ -15,6 +15,18 @@ app.get('/', function(request, response) {
 	response.render('pages/test');
 });
 
+app.get('/test', function(request, response) {
+	response.render('pages/test');
+});
+
+app.get('/create', function(request, response) {
+	response.render('pages/create');
+});
+
+app.get('/admin', function(request, response) {
+	response.render('pages/admin');
+});
+
 app.get('/cool', function(request, response) {
 	response.send(cool());
 });
