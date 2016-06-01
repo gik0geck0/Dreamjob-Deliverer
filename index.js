@@ -12,7 +12,11 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
 app.get('/', function(request, response) {
-	response.render('pages/test');
+	response.render('pages/test', {deadline: '31/12/2016'} );
+});
+
+app.get('/create', function(request, response) {
+	response.render('pages/create');
 });
 
 app.get('/cool', function(request, response) {
@@ -38,6 +42,7 @@ app.get('/db', function (request, response) {
 		});
 	});
 });
+
 
 app.get('/*', function (request, response) {
 	response.redirect('/');
