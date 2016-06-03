@@ -3,6 +3,16 @@ var cool = require('cool-ascii-faces');
 var express = require('express');
 var app = express();
 
+//set up support for handling post requests
+var bodyParser = require('body-parser')
+app.use( bodyParser.json() );       // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+    extended: true
+}));
+//app.use(express.json());       // to support JSON-encoded bodies
+//app.use(express.urlencoded()); // to support URL-encoded bodies
+
+//set the port
 app.set('port', (process.env.PORT || 5000));
 
 app.use(express.static(__dirname + '/public'));
@@ -17,6 +27,12 @@ app.get('/', function(request, response) {
 
 app.get('/create', function(request, response) {
 	response.render('pages/create');
+});
+
+app.post('/create', function(request, response) {
+    var test_name = request.body.title;
+    var test_description = request.body.description;
+    response.send(test_name);
 });
 
 app.get('/test', function(request, response) {
