@@ -1,3 +1,4 @@
+/* Start PDF stuff */
 var currPage = 1;
 var numPages = 0;
 var thePDF = null;
@@ -17,6 +18,18 @@ $(window).on('load', function() {
 		pdf.getPage(currPage).then(handlePages);
 	});
 });
+
+if (!window.requestAnimationFrame) {
+	window.requestAnimationFrame = (function() {
+		return window.webkitRequestAnimationFrame ||
+			window.mozRequestAnimationFrame ||
+			window.oRequestAnimationFrame ||
+			window.msRequestAnimationFrame ||
+			function(callback, element) {
+				window.setTimeout(callback, 1000 / 60);
+			};
+	})();
+}
 
 function handlePages(page) {
 	var viewport = page.getViewport(pdfScale);
@@ -43,6 +56,7 @@ function handlePages(page) {
 		thePDF.getPage(currPage).then(handlePages);
 	}
 }
+/* End PDF stuff */
 
 $(document).ready(function(){
 	$('#file_name').click(function(){
@@ -57,6 +71,7 @@ $(document).ready(function(){
 	initializeClock('time_remaining', '5/26/2216 0:12:00 UTC');
 });
 
+/* Start time remaining stuff */
 function getTimeRemaining(endtime){
 	var t = Date.parse(endtime) - Date.parse(new Date());
 	var seconds = Math.floor( (t/1000) % 60 );
@@ -90,16 +105,4 @@ function initializeClock(id, endtime){
 		}
 	},1000);
 }
-
-//Let's try pdf stuff
-if (!window.requestAnimationFrame) {
-	window.requestAnimationFrame = (function() {
-		return window.webkitRequestAnimationFrame ||
-			window.mozRequestAnimationFrame ||
-			window.oRequestAnimationFrame ||
-			window.msRequestAnimationFrame ||
-			function(callback, element) {
-				window.setTimeout(callback, 1000 / 60);
-			};
-	})();
-}
+/* End time remaining stuff */

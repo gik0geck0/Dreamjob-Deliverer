@@ -2,37 +2,48 @@
 <html>
 <head>
 	<% include ../partials/header.ejs %>
+	
+	<script type='text/javascript' src='/scripts/create.js'></script>
 </head>
 
-<body oncontextmenu="return false;">
+<body>
 
-<div class="container-fluid">
-	<h2 style="text-align:center; padding:10px;">&lt;&lt;Create Test&gt;&gt;</h2>
+<div class='container-fluid'>
+	<h2 style='text-align:center; padding:10px;'>Create a New Test</h2>
+	
+	<div class='row'>
+		<div class='col-md-2'></div>
 
-	<!-- Upload field and button -->
-	<form class="form" role="form" name="test_form" id="test_form">
-		<div class="form-group form-group-lg">
-			<label for="title"> Title:</label>
-			<input type="text" class="form-control" name="title" id="title"><br>
+		<div class='col-sm-12 col-md-8'>
+			<!-- Upload field and button -->
+			<form class='form' role='form' method='POST' name='test_form' id='test_form'  enctype='multipart/form-data'>
+				<div class='form-group form-group-lg'>
+					<label for='title'>Test Title (20 characters max):</label>
+					<input type='text' maxlength='20' class='form-control' name='title' id='title' required>
+				</div>
+				<div class='form-group'>
+					<label for='description'>Test Description (256 characters max):</label>
+					<textarea class='form-control' rows='3' maxlength='256' name='description' id='description'></textarea>
+				</div>
+				<label for='select_file'>Intructions File (1GB max):</label>
+				<div class='input-group input-group-lg'>
+					<label class='input-group-btn'>
+						<span class='btn btn-default'>
+							Browse
+							<input class='form-control-static' type='file' accept='.pdf' name='select_file' id='select_file' style='display:none' />
+						</span>
+					</label>
+					<input class='form-control' type='text' name='file_name' id='file_name' placeholder='Select an instructions file to upload' required />
+				</div>
+				<br/>
+				<div class='input-btn'>
+					<button class='btn btn-lg btn-primary' type='submit'>Submit</button>
+				</div>
+			</form>
 		</div>
-		<div class="input-group input-group-lg">
-			<label class="input-group-btn">
-				<span class="btn btn-default">
-					Browse
-					<input class="form-control-static" type="file" id="select_file" style="display:none" required />
-				</span>
-			</label>
-			<input class="form-control" type="text" id="file_name" value="Select an instructions file to upload" readonly />			
-				<span class="input-group-btn">
-					<button class="btn btn-primary" type="submit">Submit</button>
-				</span>
-				<br>
-		</div>
-		<div class="form-group form-group-lg">
-			<label for="description"> Description:</label>
-			<input type="text" class="form-control" name="description" id="description"><br>
-		</div>
-	</form>
+
+		<div class='col-md-2'></div>
+	</div>
 	
 </div>
 

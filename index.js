@@ -1,16 +1,19 @@
 var pg = require('pg');
+var fs = require('fs');
 var cool = require('cool-ascii-faces');
 var express = require('express');
+// var jquery = require('jquery');
+// var bootstrap = require('bootstrap');
 var app = express();
 
 //set up support for handling post requests
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
 app.use( bodyParser.json() );       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
     extended: true
 }));
-//app.use(express.json());       // to support JSON-encoded bodies
-//app.use(express.urlencoded()); // to support URL-encoded bodies
+var multer = require('multer');
+var upload = multer({dest:'uploads/'});
 
 //set the port
 app.set('port', (process.env.PORT || 5000));
@@ -29,9 +32,10 @@ app.get('/create', function(request, response) {
 	response.render('pages/create');
 });
 
-app.post('/create', function(request, response) {
+app.post('/create', upload.single('select_file'), function(request, response, next) {
     var test_name = request.body.title;
     var test_description = request.body.description;
+    console.log(request.file);
     response.send(test_name);
 });
 

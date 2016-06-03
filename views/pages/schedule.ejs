@@ -2,28 +2,49 @@
 <html>
 <head>
 	<% include ../partials/header.ejs %>
+	
+	<script type='text/javascript' src='/scripts/schedule.js'></script>
 </head>
 
-<body oncontextmenu="return false;">
+<body>
 
-<div class="container-fluid">
-	<h2 style="text-align:center; padding:10px;">&lt;&lt;Schedule Test&gt;&gt;</h2>
+<div class='container-fluid'>
+	<h2 style='text-align:center; padding:10px;'>Schedule a Test</h2>
 
-	<!-- Upload field and button -->
-	<form class="form" role="form" name="test_form" id="test_form">
-		<div class="form-group form-group-lg">
-			<label for="candidate"> Candidate: </label>
-			<input type="text" class="form-control" name="candidate" id="candidate"><br>
+	<div class='row'>
+		<div class='col-md-2'></div>
+
+		<div class='col-sm-12 col-md-8'>
+			<!-- Upload field and button -->
+			<form class='form' role='form' name='test_form' id='test_form'>
+				<div class='form-group form-group-lg'>
+					<label for='candidate'>Candidate Name or Email: </label>
+					<input type='text' class='form-control' name='candidate' id='candidate' required><br>
+				</div>
+				<div class='form-group form-group-lg'>
+					<label for='starttime'>Start Date and Time:</label>
+					<input type='datetime-local' class='form-control' name='starttime' id='starttime' required><br>
+				</div>
+				<div class='form-group form-group-lg'>
+					<label for='endtime'>End Date and Time:</label>
+					<input type='text' class='form-control' name='endtime' id='endtime' required><br>
+				</div>
+				<div class='form-group'>
+                <div class='input-group date' id='datetimepicker1'>
+                    <input type='text' class='form-control' />
+                    <span class='input-group-addon'>
+                        <span class='glyphicon glyphicon-calendar'></span>
+                    </span>
+                </div>
+            </div>
+				<div class='input-btn'>
+					<button class='btn btn-lg btn-primary' type='submit'>Submit</button>
+				</div>
+			</form>
 		</div>
-		<div class="form-group form-group-lg">
-			<label for="starttime"> Start Time:</label>
-			<input type="datetime-local" class="form-control" name="starttime" id="starttime"><br>
-		</div>
-		<div class="form-group form-group-lg">
-			<label for="endtime"> End Time:</label>
-			<input type="datetime-local" class="form-control" name="endtime" id="endtime"><br>
-		</div>
-	</form>
+
+		<div class='col-md-2'></div>
+	</div>
 	
 </div>
 
