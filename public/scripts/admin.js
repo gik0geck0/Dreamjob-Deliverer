@@ -4,4 +4,13 @@ function loadList() {
     test_list.innerHTML += data;
 }
 
-$(document).ready(function(){loadList(); loadList();});
+$(document).ready(function(){
+    loadList(); loadList();
+    
+    $('#create-new-test').click(function(){
+        var url = '/create';
+        window.location.href = url;
+    });
+
+
+});
