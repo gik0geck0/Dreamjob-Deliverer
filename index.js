@@ -23,6 +23,14 @@ app.get('/create', function(request, response) {
 	response.render('pages/create');
 });
 
+app.get('/test', function(request, response) {
+	response.render('pages/test', {deadline: '31/12/2016'} );
+});
+
+app.get('/admin', function(request, response) {
+	response.render('pages/admin');
+});
+    
 app.get('/schedule', function(request, response) {
 	response.render('pages/schedule');
 });

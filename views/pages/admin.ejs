@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<% include ../partials/header.ejs %>
+    
+    
+	<script type="text/javascript" src="/scripts/admin.js"></script>
+</head>
+
+<body oncontextmenu="return false;">
+
+<div class="container-fluid">
+	<h2 style="text-align:center; padding:10px;">Test Portal</h2>
+	
+	<div class="row">
+		<div class="col-sm-2 col-md-2"></div>
+		
+		<div class="col-sm-8 col-md-8">
+            <h3 style="text-align:center; padding:10px;">Test Library</h3>
+            <button class='btn btn-primary' id='create-new-test'>Create New Test</button>
+            <div class="list-group" id="test_list" style="width='100%'">
+            </div>
+		</div>
+		
+		<div class="col-sm-2 col-md-2"></div>
+	</div>
+	
+	<div class="row">
+		<div class="col-sm-2 col-md-2"></div>
+		
+		<div class="col-sm-8 col-md-8">
+			<h3 style="text-align:center; padding:10px;">Hover Rows</h3>        
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Candidate</th>
+                        <th>Test</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>John</td>
+                        <td>Test1</td>
+                        <td>now</td>
+                        <td>eventually</td>
+                    </tr>
+                    <tr>
+                        <td>Blobby</td>
+                        <td>Test2</td>
+                        <td>sometime</td>
+                        <td>later</td>
+                    </tr>
+                    <tr>
+                        <td>Who?</td>
+                        <td>What?</td>
+                        <td>Tomorrow?</td>
+                        <td>Yesterday?</td>
+                    </tr>
+                </tbody>
+            </table>
+		</div>
+		
+		<div class="col-sm-2 col-md-2"></div>
+	</div>
+</div>
+
+</body>
+</html>
