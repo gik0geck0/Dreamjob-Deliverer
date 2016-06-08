@@ -7,4 +7,9 @@ function loadList() {
 $(document).ready(function(){
 	loadList();
 	loadList();
+    
+    $('#create-new-test').click(function(){
+        var url = '/create';
+        window.location.href = url;
+    });
 });

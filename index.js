@@ -1,10 +1,19 @@
 var pg = require('pg');
+var fs = require('fs');
 var cool = require('cool-ascii-faces');
 var express = require('express');
 var app = express();
 
-var test = express();
+//set up support for handling post requests
+var bodyParser = require('body-parser');
+app.use( bodyParser.json() );       // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+    extended: true
+}));
+var multer = require('multer');
+var upload = multer({dest:'uploads/'});
 
+//set the port
 app.set('port', (process.env.PORT || 5000));
 
 app.use(express.static(__dirname + '/public'));
@@ -19,6 +28,13 @@ app.get('/', function(request, response) {
 
 app.get('/create', function(request, response) {
 	response.render('pages/create');
+});
+
+app.post('/create', upload.single('select_file'), function(request, response, next) {
+    var test_name = request.body.title;
+    var test_description = request.body.description;
+    console.log(request.file);
+    response.send(test_name);
 });
 
 app.get('/test', function(request, response) {
