@@ -3,7 +3,8 @@
 <head>
 	<% include ../partials/header.ejs %>
 	
-	<script type='text/javascript' src='/scripts/create.js'></script>
+	<!-- Create page script -->
+	<script type='text/javascript' src='/js/create.js'></script>
 </head>
 
 <body>
@@ -21,10 +22,12 @@
 					<label for='title'>Test Title (20 characters max):</label>
 					<input type='text' maxlength='20' class='form-control' name='title' id='title' required>
 				</div>
+				
 				<div class='form-group'>
 					<label for='description'>Test Description (256 characters max):</label>
 					<textarea class='form-control' rows='3' maxlength='256' name='description' id='description'></textarea>
 				</div>
+				
 				<label for='select_file'>Intructions File (1GB max):</label>
 				<div class='input-group input-group-lg'>
 					<label class='input-group-btn'>
@@ -36,8 +39,9 @@
 					<input class='form-control' type='text' name='file_name' id='file_name' placeholder='Select an instructions file to upload' required />
 				</div>
 				<br/>
-				<div class='input-btn'>
-					<button class='btn btn-lg btn-primary' type='submit'>Submit</button>
+				
+				<div class='btn-group btn-group-lg'>
+					<input class='btn btn-primary' type='submit' value='Submit' />
 				</div>
 			</form>
 		</div>

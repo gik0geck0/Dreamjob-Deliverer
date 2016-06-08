@@ -2,8 +2,6 @@ var pg = require('pg');
 var fs = require('fs');
 var cool = require('cool-ascii-faces');
 var express = require('express');
-// var jquery = require('jquery');
-// var bootstrap = require('bootstrap');
 var app = express();
 
 //set up support for handling post requests
@@ -25,7 +23,7 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
 app.get('/', function(request, response) {
-	response.render('pages/test', {deadline: '31/12/2016'} );
+	response.render('pages/admin');
 });
 
 app.get('/create', function(request, response) {
