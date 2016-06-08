@@ -23,7 +23,7 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
 app.get('/', function(request, response) {
-	response.render('pages/test', {deadline: '31/12/2016'} );
+	response.render('pages/admin');
 });
 
 app.get('/create', function(request, response) {
