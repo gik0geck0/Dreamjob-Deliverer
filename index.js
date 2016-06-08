@@ -86,13 +86,13 @@ var webdriver = require('selenium-webdriver'),
     By = webdriver.By,
     until = webdriver.until;
 
-System.setProperty("webdriver.chrome.driver","./chromedriver");
+//System.setProperty("webdriver.chrome.driver","./chromedriver");
 
-var driver = new ChromeDriver();
+//var driver = new ChromeDriver();
 //
-//var driver = new webdriver.Builder()
-  //  .forBrowser('chrome')
-    //.build();
+var driver = new webdriver.Builder()
+    .forBrowser('chrome')
+    .build();
 
 driver.get('localhost:5000');
 //driver.findElement(By.name('q')).sendKeys('webdriver');
