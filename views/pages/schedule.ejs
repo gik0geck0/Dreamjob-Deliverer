@@ -3,7 +3,19 @@
 <head>
 	<% include ../partials/header.ejs %>
 	
-	<script type='text/javascript' src='/scripts/schedule.js'></script>
+	<!-- Moment js -->
+	<script type='text/javascript' src='/js/moment.min.js'></script>
+	
+	<!-- Twitter Bootstrap js -->
+	<script type='text/javascript' src='/bootstrap/js/transition.js'></script>
+	<script type='text/javascript' src='/bootstrap/js/collapse.js'></script>
+	
+	<!-- Bootstrap datetimepicker -->
+	<link rel='stylesheet' type='text/css' href='/css/bootstrap-datetimepicker.min.css'>
+	<script type='text/javascript' src='/js/bootstrap-datetimepicker.min.js'></script>
+	
+	<!-- Schedule page script -->
+	<script type='text/javascript' src='/js/schedule.js'></script>
 </head>
 
 <body>
@@ -19,26 +31,34 @@
 			<form class='form' role='form' name='test_form' id='test_form'>
 				<div class='form-group form-group-lg'>
 					<label for='candidate'>Candidate Name or Email: </label>
-					<input type='text' class='form-control' name='candidate' id='candidate' required><br>
+					<input type='text' class='form-control' name='candidate' id='candidate' required>
 				</div>
-				<div class='form-group form-group-lg'>
+				
+				<!-- <div class='form-group form-group-lg'>
 					<label for='starttime'>Start Date and Time:</label>
-					<input type='datetime-local' class='form-control' name='starttime' id='starttime' required><br>
+					<input type='text' class='form-control datetimepicker' name='starttime' id='starttime' required>
 				</div>
+				
 				<div class='form-group form-group-lg'>
 					<label for='endtime'>End Date and Time:</label>
-					<input type='text' class='form-control' name='endtime' id='endtime' required><br>
-				</div>
-				<div class='form-group'>
-                <div class='input-group date' id='datetimepicker1'>
-                    <input type='text' class='form-control' />
-                    <span class='input-group-addon'>
-                        <span class='glyphicon glyphicon-calendar'></span>
-                    </span>
-                </div>
-            </div>
-				<div class='input-btn'>
-					<button class='btn btn-lg btn-primary' type='submit'>Submit</button>
+					<input type='text' class='form-control datetimepicker' name='endtime' id='endtime' required>
+				</div> -->
+				
+				<label for='starttime'>Start Date and Time:</label>
+				<div id='starttime'></div>
+				<br>
+				
+				<label for='endtime'>End Date and Time:</label>
+				<div id='endtime'></div>
+				<br>
+				
+				<div class='btn-group btn-group-justified'>
+					<div class='btn-group btn-group-lg'>
+						<input class='btn btn-primary' type='submit' value='Submit' />
+					</div>
+					<div class='btn-group btn-group-lg'>
+						<input class='btn btn-primary' type='button' value='Cancel' />
+					</div>
 				</div>
 			</form>
 		</div>
