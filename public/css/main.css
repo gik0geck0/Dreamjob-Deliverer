@@ -10,7 +10,7 @@
 }
 
 .jumbotron .btn-primary:hover {
-		background: #7646c1;
+	background: #7646c1;
 }
 
 .jumbotron p {
@@ -35,5 +35,13 @@
 }
 
 .jumbotron .lang-logo img {
-		max-width: 100%;
+	max-width: 100%;
+}
+
+.big-colon {
+	font-size: 24pt;
+}
+
+.scrolling-list {
+	overflow-y:scroll;
 }

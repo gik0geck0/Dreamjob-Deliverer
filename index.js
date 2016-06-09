@@ -1,8 +1,9 @@
-var pg = require('pg');
 var fs = require('fs');
-var cool = require('cool-ascii-faces');
 var express = require('express');
 var app = express();
+
+//TODO: use this to create unique URL extensions for scheduled tests
+var crypto = require('crypto');
 
 //set up support for handling post requests
 var bodyParser = require('body-parser');
@@ -18,12 +19,12 @@ app.set('port', (process.env.PORT || 5000));
 
 app.use(express.static(__dirname + '/public'));
 
-// views is directory for all template files
+//views is directory for all template files
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
 app.get('/', function(request, response) {
-	response.render('pages/admin');
+	response.redirect('/admin');
 });
 
 app.get('/create', function(request, response) {
@@ -75,6 +76,8 @@ app.get('/schedule', function(request, response) {
 	response.render('pages/schedule');
 });
 
+/*** Test pages
+var cool = require('cool-ascii-faces');
 app.get('/cool', function(request, response) {
 	response.send(cool());
 });
@@ -87,6 +90,7 @@ app.get('/times', function(request, response) {
 	response.send(result);
 });
 
+var pg = require('pg');
 app.get('/db', function (request, response) {
 	pg.connect(process.env.DATABASE_URL, function(err, client, done) {
 	client.query('SELECT * FROM test_table', function(err, result) {
@@ -98,7 +102,7 @@ app.get('/db', function (request, response) {
 		});
 	});
 });
-
+***/
 
 app.get('/*', function (request, response) {
 	response.redirect('/');
