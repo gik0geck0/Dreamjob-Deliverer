@@ -84,7 +84,7 @@ app.get('/admin', function(request, response) {
 			{ test_array = result.rows; }
 		});
     //Query the test_instances table for everything but the file
-    client.query('SELECT id, name, email, test_title, start_time, end_time, url FROM test_instances', function(err, result) {
+    client.query('SELECT name, email, test_title, start_time, end_time, url FROM test_instances', function(err, result) {
 		done();
 		if (err)
 			{ console.error(err); response.send("Error " + err); }
@@ -93,12 +93,40 @@ app.get('/admin', function(request, response) {
 		});
     });
     //render the page while passing the data
-    console.log(test_array); 
 	response.render('pages/admin', {test_array: test_array, test_instances_array: test_instances_array});
 });
     
 app.get('/schedule', function(request, response) {
-	response.render('pages/schedule');
+	response.render('pages/schedule', {test_title: 'Hello alert'});
+});
+
+app.post('/schedule', function(request, response, next) {
+    var candidate_name = request.body.candidatename;
+    var candidate_email = request.body.candidateemail;
+    var start_time = request.body.starttime;
+    var end_time = request.body.endtime;
+    //TODO: Need to figure this part out
+    var test_name = request.body.testtitle;
+    
+    //TODO: create the url
+    var test_url = "not sure yet";
+    
+    pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+        client.query('insert into test_instances (name, email, test_title, start_time, end_time, url) values ($1, $2, $3, $4, $5, $6)',
+               [candidate_name, candidate_email, test_name, start_time, end_time, test_url],
+               function(err, result) {
+                    done();
+                    if (err)
+                        { console.error(err); response.send("Error " + err); }
+                    else
+                        { 
+                            //first unlink/remove the file we added to uploads/
+                            fs.unlink(request.file.path);
+                            //then redirect back to the admin page
+                            response.redirect('/admin');
+                        }
+                });
+    });
 });
 
 /*** Test pages

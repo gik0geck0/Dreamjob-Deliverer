@@ -1,4 +1,5 @@
 $(document).ready(function(){
+
 	$('#starttime').datetimepicker({
 		inline: true,
 		sideBySide: true

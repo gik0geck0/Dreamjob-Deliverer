@@ -28,7 +28,10 @@
 
 		<div class='col-sm-12 col-md-8'>
 			<!-- Upload field and button -->
-			<form class='form' role='form' name='test_form' id='test_form'>
+			<form class='form' role='form' method='POST' name='test_form' id='test_form'>
+            <!-- When rendering this page, it is important to always provide a value here 
+                    otherwise the database will be sad -->
+            <input type='hidden' name='testtile' id='testtitle' value='<%= test_title %>' >
 				<div class='form-group form-group-lg'>
 					<label for='candidatename'>Candidate Name: </label>
 					<input type='text' class='form-control' name='candidatename' id='candidatename' >
