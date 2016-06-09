@@ -1,4 +1,5 @@
 var fs = require('fs');
+var pg = require('pg');
 var express = require('express');
 var app = express();
 
@@ -68,8 +69,32 @@ app.get('/test', function(request, response) {
 });
 
 app.get('/admin', function(request, response) {
-//TODO: grab all the titles and descriptions from the tests database
-	response.render('pages/admin');
+
+    //Create variables to hold the values from the tables
+    var test_array;
+    var test_instances_array;
+    //Query the tables so we can show admins the data
+    pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+    //Query tests table for everything but the file
+	client.query('SELECT title, description FROM tests', function(err, result) {
+		done();
+		if (err)
+			{ console.error(err); response.send("Error " + err); }
+		else
+			{ test_array = result.rows; }
+		});
+    //Query the test_instances table for everything but the file
+    client.query('SELECT id, name, email, test_title, start_time, end_time, url FROM test_instances', function(err, result) {
+		done();
+		if (err)
+			{ console.error(err); response.send("Error " + err); }
+		else
+			{ test_instances_array = result.rows; }
+		});
+    });
+    //render the page while passing the data
+    console.log(test_array); 
+	response.render('pages/admin', {test_array: test_array, test_instances_array: test_instances_array});
 });
     
 app.get('/schedule', function(request, response) {
