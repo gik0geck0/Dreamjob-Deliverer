@@ -45,3 +45,12 @@
 .scrolling-list {
 	overflow-y:scroll;
 }
+
+.glyph-td {
+	text-align: center;
+	vertical-align: middle;
+}
+
+.glyph {
+	font-size: 16pt;
+}
