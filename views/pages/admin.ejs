@@ -3,66 +3,86 @@
 <head>
 	<% include ../partials/header.ejs %>
     
+	<!-- Additional Bootstrap js -->
+	<script type='text/javascript' src='/bootstrap/js/tab.js'></script>
+	
 	<!-- Admin page script -->    
 	<script type='text/javascript' src='/js/admin.js'></script>
 </head>
 
-<body oncontextmenu='return false;'>
+<body>
 
 <div class='container-fluid'>
-	<h2 style='text-align:center; padding:10px;'>Test Portal</h2>
+	<h1 style='text-align:center; padding:10px;'>Dreamjob Deliverer</h2>
 	
 	<div class='row'>
-		<div class='col-sm-2 col-md-2'></div>
+		<div class='col-md-2'></div>
 		
-		<div class='col-sm-8 col-md-8'>
+		<div class='col-sm-12 col-md-8'>
             <h3 style='text-align:center; padding:10px;'>Test Library</h3>
             <button class='btn btn-primary' id='create-new-test'>Create New Test</button>
-            <div class='list-group' id='test_list' style='width='100%''>
+            <div class='list-group scrolling-list' id='test_list'>
             </div>
 		</div>
 		
-		<div class='col-sm-2 col-md-2'></div>
+		<div class='col-md-2'></div>
 	</div>
 	
 	<div class='row'>
-		<div class='col-sm-2 col-md-2'></div>
+		<div class='col-md-2'></div>
 		
-		<div class='col-sm-8 col-md-8'>
-			<h3 style='text-align:center; padding:10px;'>Scheduled Tests</h3>        
-            <table class='table table-hover'>
-                <thead>
-                    <tr>
-                        <th>Candidate</th>
-                        <th>Test</th>
-                        <th>Start Time</th>
-                        <th>End Time</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>John</td>
-                        <td>Test1</td>
-                        <td>now</td>
-                        <td>eventually</td>
-                    </tr>
-                    <tr>
-                        <td>Blobby</td>
-                        <td>Test2</td>
-                        <td>sometime</td>
-                        <td>later</td>
-                    </tr>
-                    <tr>
-                        <td>Who?</td>
-                        <td>What?</td>
-                        <td>Tomorrow?</td>
-                        <td>Yesterday?</td>
-                    </tr>
-                </tbody>
-            </table>
+		<div class='col-sm-12 col-md-8'>
+			<ul id='tabs' class='nav nav-tabs'>
+				<li class='active'><a data-toggle='tab' href='#scheduled-tests'>Scheduled</a></li>
+				<li><a data-toggle='tab' href='#in-progress-tests'>In-Progress</a></li>
+				<li><a data-toggle='tab' href='#finished-tests'>Finished</a></li>
+			</ul>
+			<div class='tab-content'>
+				<div id='scheduled-tests' class='scrolling-list tab-pane fade in active'>
+					<table class='table table-hover table-border'>
+						<thead>
+							<tr>
+								<th>Candidate</th>
+								<th>Test</th>
+								<th>Start Time</th>
+								<th>End Time</th>
+							</tr>
+						</thead>
+						<tbody id='scheduled-tbody'>
+						</tbody>
+					</table>
+				</div>
+				<div id='in-progress-tests' class='scrolling-list tab-pane fade'>
+					<table class='table table-hover table-border'>
+						<thead>
+							<tr>
+								<th>Candidate</th>
+								<th>Test</th>
+								<th>End Time</th>
+							</tr>
+						</thead>
+						<tbody id='in-progress-tbody'>
+						</tbody>
+					</table>
+				</div>
+				<div id='finished-tests' class='scrolling-list tab-pane fade'>
+					<table class='table table-hover table-border'>
+						<thead>
+							<tr>
+								<th>Candidate</th>
+								<th>Test</th>
+								<th>Start Time</th>
+								<th>End Time</th>
+							</tr>
+						</thead>
+						<tbody id='finished-tbody'>
+						</tbody>
+					</table>
+				</div>
+			</div>
 		</div>
 		
-		<div class='col-sm-2 col-md-2'></div>
+		<div class='col-md-2'></div>
 	</div>
 </div>
 
