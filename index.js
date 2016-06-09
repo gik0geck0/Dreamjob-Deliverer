@@ -34,8 +34,33 @@ app.get('/create', function(request, response) {
 app.post('/create', upload.single('select_file'), function(request, response, next) {
     var test_name = request.body.title;
     var test_description = request.body.description;
-    console.log(request.file);
-    response.send(test_name);
+    //needed for bytea
+    var test_data = '\\x';
+    //time to read the file
+    fs.readFile(request.file.path, 'hex', function (err,data) {
+        if (err) {
+            return console.log(err);
+        }
+        //grab the data
+        test_data = test_data + data;
+        //query the database to insert the new test 
+        pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+            client.query('insert into tests (title, description, instructions) values ($1, $2, $3)',
+                   [test_name, test_description, test_data],
+                   function(err, result) {
+                        done();
+                        if (err)
+                            { console.error(err); response.send("Error " + err); }
+                        else
+                            { 
+                                //first unlink/remove the file we added to uploads/
+                                fs.unlink(request.file.path);
+                                //then redirect back to the admin page
+                                response.redirect('/admin');
+                            }
+                    });
+        });
+    });
 });
 
 app.get('/test', function(request, response) {
@@ -43,6 +68,7 @@ app.get('/test', function(request, response) {
 });
 
 app.get('/admin', function(request, response) {
+//TODO: grab all the titles and descriptions from the tests database
 	response.render('pages/admin');
 });
     
