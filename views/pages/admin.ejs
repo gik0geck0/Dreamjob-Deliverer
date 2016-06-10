@@ -8,6 +8,15 @@
 	
 	<!-- Admin page script -->    
 	<script type='text/javascript' src='/js/admin.js'></script>
+    
+    <!-- Script for loading the test list -->
+    <script>
+        loadList = function() {
+            <% test_array.forEach(function(item) { %>
+                loadTest('<%= item.title %>', '<%= item.description %>');
+            <% }); %>
+        };
+    </script>
 </head>
 
 <body>
