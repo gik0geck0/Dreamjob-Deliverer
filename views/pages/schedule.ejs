@@ -21,7 +21,7 @@
 <body>
 
 <div class='container-fluid'>
-	<h2 style='text-align:center; padding:10px;'>Schedule a Test</h2>
+	<h2 style='text-align:center; padding:10px;'><%= test_title %></h2>
 
 	<div class='row'>
 		<div class='col-md-2'></div>
@@ -55,7 +55,7 @@
 						<input class='btn btn-primary' type='submit' value='Submit' />
 					</div>
 					<div class='btn-group btn-group-lg'>
-						<input class='btn btn-primary' type='button' value='Cancel' />
+						<input class='btn btn-primary' type='button' value='Cancel' onclick='window.history.back();' />
 					</div>
 				</div>
 			</form>

@@ -1,8 +1,8 @@
-function loadList(testname) {
-    $('#test_list').append(
-		`<a href='/view?testname=${testname}' class='list-group-item'>
-			<span class='badge' href='/schedule?testname=${testname}'>schedule</span>
-			${testname}
+function loadTest(testtitle, testdescription) {
+    $('#test-list').append(
+		`<a id='view-${testtitle}' class='list-group-item'>
+			<button class='badge' id='schedule-${testtitle}'>schedule</button>
+			${testtitle} ${testdescription}
 		</a>`
 	);
 }
@@ -61,66 +61,27 @@ function addFinished(candidate, email, title, start, end) {
 }
 
 $(document).ready(function(){
-	loadList('Test1');
-	loadList('Test2');
-	loadList('Test1');
-	loadList('Test2');
-	loadList('Test1');
-	loadList('Test2');
-	loadList('Test1');
-	loadList('Test2');
-	loadList('Test1');
-	loadList('Test2');
-	loadList('Test1');
-	loadList('Test2');
-	loadList('Test1');
-	loadList('Test2');
-	loadList('Test1');
-	loadList('Test2');
-	loadList('Test1');
-	loadList('Test2');
-	loadList('Test1');
-	loadList('Test2');
-	addScheduled('Tom', 'tom@gmail.com', 'Test1', '07-05-2016 7:00 am', '07-15-2016 7:00 am');
+	//loadTest('Test1');
+	//loadTest('Test2');
+	loadList();
+    addScheduled('Tom', 'tom@gmail.com', 'Test1', '07-05-2016 7:00 am', '07-15-2016 7:00 am');
 	addInProgress('Tom', 'tom@gmail.com', 'Test2', '06-05-2016 7:00 am', '07-05-2016 7:00 am');
 	addFinished('Tom', 'tom@gmail.com', 'Test1', '06-05-2016 7:00 am', '06-08-2016 9:00 am');
-	addScheduled('Tom', 'tom@gmail.com', 'Test1', '07-05-2016 7:00 am', '07-15-2016 7:00 am');
-	addInProgress('Tom', 'tom@gmail.com', 'Test2', '06-05-2016 7:00 am', '07-05-2016 7:00 am');
-	addFinished('Tom', 'tom@gmail.com', 'Test1', '06-05-2016 7:00 am', '06-08-2016 9:00 am');
-	addScheduled('Tom', 'tom@gmail.com', 'Test1', '07-05-2016 7:00 am', '07-15-2016 7:00 am');
-	addInProgress('Tom', 'tom@gmail.com', 'Test2', '06-05-2016 7:00 am', '07-05-2016 7:00 am');
-	addFinished('Tom', 'tom@gmail.com', 'Test1', '06-05-2016 7:00 am', '06-08-2016 9:00 am');
-	addScheduled('Tom', 'tom@gmail.com', 'Test1', '07-05-2016 7:00 am', '07-15-2016 7:00 am');
-	addInProgress('Tom', 'tom@gmail.com', 'Test2', '06-05-2016 7:00 am', '07-05-2016 7:00 am');
-	addFinished('Tom', 'tom@gmail.com', 'Test1', '06-05-2016 7:00 am', '06-08-2016 9:00 am');
-	addScheduled('Tom', 'tom@gmail.com', 'Test1', '07-05-2016 7:00 am', '07-15-2016 7:00 am');
-	addInProgress('Tom', 'tom@gmail.com', 'Test2', '06-05-2016 7:00 am', '07-05-2016 7:00 am');
-	addFinished('Tom', 'tom@gmail.com', 'Test1', '06-05-2016 7:00 am', '06-08-2016 9:00 am');
-	addScheduled('Tom', 'tom@gmail.com', 'Test1', '07-05-2016 7:00 am', '07-15-2016 7:00 am');
-	addInProgress('Tom', 'tom@gmail.com', 'Test2', '06-05-2016 7:00 am', '07-05-2016 7:00 am');
-	addFinished('Tom', 'tom@gmail.com', 'Test1', '06-05-2016 7:00 am', '06-08-2016 9:00 am');
-	addScheduled('Tom', 'tom@gmail.com', 'Test1', '07-05-2016 7:00 am', '07-15-2016 7:00 am');
-	addInProgress('Tom', 'tom@gmail.com', 'Test2', '06-05-2016 7:00 am', '07-05-2016 7:00 am');
-	addFinished('Tom', 'tom@gmail.com', 'Test1', '06-05-2016 7:00 am', '06-08-2016 9:00 am');
-	addScheduled('Tom', 'tom@gmail.com', 'Test1', '07-05-2016 7:00 am', '07-15-2016 7:00 am');
-	addInProgress('Tom', 'tom@gmail.com', 'Test2', '06-05-2016 7:00 am', '07-05-2016 7:00 am');
-	addFinished('Tom', 'tom@gmail.com', 'Test1', '06-05-2016 7:00 am', '06-08-2016 9:00 am');
-	addScheduled('Tom', 'tom@gmail.com', 'Test1', '07-05-2016 7:00 am', '07-15-2016 7:00 am');
-	addInProgress('Tom', 'tom@gmail.com', 'Test2', '06-05-2016 7:00 am', '07-05-2016 7:00 am');
-	addFinished('Tom', 'tom@gmail.com', 'Test1', '06-05-2016 7:00 am', '06-08-2016 9:00 am');
-	addScheduled('Tom', 'tom@gmail.com', 'Test1', '07-05-2016 7:00 am', '07-15-2016 7:00 am');
-	addInProgress('Tom', 'tom@gmail.com', 'Test2', '06-05-2016 7:00 am', '07-05-2016 7:00 am');
-	addFinished('Tom', 'tom@gmail.com', 'Test1', '06-05-2016 7:00 am', '06-08-2016 9:00 am');
-	addScheduled('Tom', 'tom@gmail.com', 'Test1', '07-05-2016 7:00 am', '07-15-2016 7:00 am');
-	addInProgress('Tom', 'tom@gmail.com', 'Test2', '06-05-2016 7:00 am', '07-05-2016 7:00 am');
-	addFinished('Tom', 'tom@gmail.com', 'Test1', '06-05-2016 7:00 am', '06-08-2016 9:00 am');
-	addScheduled('Tom', 'tom@gmail.com', 'Test1', '07-05-2016 7:00 am', '07-15-2016 7:00 am');
-	addInProgress('Tom', 'tom@gmail.com', 'Test2', '06-05-2016 7:00 am', '07-05-2016 7:00 am');
-	addFinished('Tom', 'tom@gmail.com', 'Test1', '06-05-2016 7:00 am', '06-08-2016 9:00 am');
-    
+	
+	var gotoview = true;
+	
+	$('#test-list a button').click(function() {
+		gotoview = false;
+		window.location.href = '/schedule?testname=' + this.id.substring(9);
+	});
+	
+	$('#test-list a').click(function() {
+		if (gotoview)
+			window.location.href =  '/view?testname=' + this.id.substring(5);
+	});
+	
     $('#create-new-test').click(function(){
-        var url = '/create';
-        window.location.href = url;
+        window.location.href = '/create';
     });
 	
 	$('#tabs').tab();
