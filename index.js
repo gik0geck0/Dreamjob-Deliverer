@@ -130,7 +130,7 @@ app.get('/admin', function(request, response) {
 });
     
 app.get('/schedule', function(request, response) {
-	response.render('pages/schedule', {test_title: 'Hello alert'});
+	response.render('pages/schedule', {test_title: request.query.testname});
 });
 
 app.post('/schedule', function(request, response, next) {
