@@ -73,6 +73,12 @@ app.get('/admin', function(request, response) {
     //Create variables to hold the values from the tables
     var test_array;
     var test_instances_array;
+    
+    //add a flag to check if the first query finished
+    //since this is viewed in two queries, there is a chance of having a race condition
+    //The race condition should result in the page never loading
+    var first_query_complete = false;
+    
     //Query the tables so we can show admins the data
     pg.connect(process.env.DATABASE_URL, function(err, client, done) {
     //Query tests table for everything but the file
@@ -81,7 +87,18 @@ app.get('/admin', function(request, response) {
 		if (err)
 			{ console.error(err); response.send("Error " + err); }
 		else
-			{ test_array = result.rows; }
+			{ 
+                test_array = result.rows; 
+                if(first_query_complete)
+                {
+                    //render the page while passing the data
+                    response.render('pages/admin', {test_array: test_array, test_instances_array: test_instances_array});
+                }
+                else
+                {
+                    first_query_complete = true;
+                }
+            }
 		});
     //Query the test_instances table for everything but the file
     client.query('SELECT name, email, test_title, start_time, end_time, url FROM test_instances', function(err, result) {
@@ -89,11 +106,20 @@ app.get('/admin', function(request, response) {
 		if (err)
 			{ console.error(err); response.send("Error " + err); }
 		else
-			{ test_instances_array = result.rows; }
+			{ 
+                test_instances_array = result.rows; 
+                if(first_query_complete)
+                {
+                    //render the page while passing the data
+                    response.render('pages/admin', {test_array: test_array, test_instances_array: test_instances_array});
+                }
+                else
+                {
+                    first_query_complete = true;
+                }
+            }
 		});
     });
-    //render the page while passing the data
-	response.render('pages/admin', {test_array: test_array, test_instances_array: test_instances_array});
 });
     
 app.get('/schedule', function(request, response) {
