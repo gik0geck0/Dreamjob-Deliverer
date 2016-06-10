@@ -40,26 +40,30 @@ app.post('/create', upload.single('select_file'), function(request, response, ne
     //time to read the file
     fs.readFile(request.file.path, 'hex', function (err,data) {
         if (err) {
-            return console.log(err);
+            return console.error(err);
         }
         //grab the data
         test_data = test_data + data;
         //query the database to insert the new test 
         pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+			if (err) {
+				return console.error(err);
+			}
             client.query('insert into tests (title, description, instructions) values ($1, $2, $3)',
-                   [test_name, test_description, test_data],
-                   function(err, result) {
-                        done();
-                        if (err)
-                            { console.error(err); response.send("Error " + err); }
-                        else
-                            { 
-                                //first unlink/remove the file we added to uploads/
-                                fs.unlink(request.file.path);
-                                //then redirect back to the admin page
-                                response.redirect('/admin');
-                            }
-                    });
+				[test_name, test_description, test_data],
+				function(err, result) {
+					done();
+					if (err) {
+						console.error(err);
+						response.send("Error " + err);
+					}
+					else { 
+						//first unlink/remove the file we added to uploads/
+						fs.unlink(request.file.path);
+						//then redirect back to the admin page
+						response.redirect('/admin');
+					}
+			});
         });
     });
 });
@@ -73,28 +77,38 @@ app.get('/admin', function(request, response) {
     //Create variables to hold the values from the tables
     var test_array = [];
     var test_instances_array = [];
-    //Query the tables so we can show admins the data
+
+   //Query the tables so we can show admins the data
     pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-    //Query tests table for everything but the file
-	client.query('SELECT title, description FROM tests', function(err, result) {
-		done();
-		if (err)
-			{ console.error(err); response.send("Error " + err); }
-		else
-			{ test_array = result.rows; }
+		if (err) {
+			return console.error(err);
+		}
+		//Query tests table for everything but the file
+		client.query('SELECT title, description FROM tests', function(err, result) {
+			done();
+			if (err) {
+				console.error(err);
+				response.send("Error " + err);
+			}
+			else {
+				test_array = result.rows;
+			}
 		});
-    //Query the test_instances table for everything but the file
-    client.query('SELECT name, email, test_title, start_time, end_time, url FROM test_instances', function(err, result) {
-		done();
-		if (err)
-			{ console.error(err); response.send("Error " + err); }
-		else
-			{ test_instances_array = result.rows; }
+		//Query the test_instances table for everything but the file
+		client.query('SELECT name, email, test_title, start_time, end_time, url FROM test_instances', function(err, result) {
+			done();
+			if (err) {
+				console.error(err);
+				response.send("Error " + err);
+			}
+			else {
+				test_instances_array = result.rows;
+			}
 		});
     });
     //render the page while passing the data
-	
     response.render('pages/admin', {test_array: test_array, test_instances_array: test_instances_array});
+
 });
     
 app.get('/schedule', function(request, response) {
@@ -113,20 +127,24 @@ app.post('/schedule', function(request, response, next) {
     var test_url = "not sure yet";
     
     pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+		if (err) {
+			return console.error(err);
+		}
         client.query('insert into test_instances (name, email, test_title, start_time, end_time, url) values ($1, $2, $3, $4, $5, $6)',
-               [candidate_name, candidate_email, test_name, start_time, end_time, test_url],
-               function(err, result) {
-                    done();
-                    if (err)
-                        { console.error(err); response.send("Error " + err); }
-                    else
-                        { 
-                            //first unlink/remove the file we added to uploads/
-                            fs.unlink(request.file.path);
-                            //then redirect back to the admin page
-                            response.redirect('/admin');
-                        }
-                });
+			[candidate_name, candidate_email, test_name, start_time, end_time, test_url],
+			function(err, result) {
+				done();
+				if (err) {
+					console.error(err);
+					response.send("Error " + err);
+				}
+				else { 
+					//first unlink/remove the file we added to uploads/
+					fs.unlink(request.file.path);
+					//then redirect back to the admin page
+					response.redirect('/admin');
+				}
+		});
     });
 });
 
