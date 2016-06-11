@@ -204,7 +204,7 @@ app.post('/schedule', function(request, response, next) {
 					//then redirect back to the admin page
 					success = true;
 					success_title = test_name;
-					schedule_url = 'http://www.' + request.headers.host + '/test/' + test_url;
+					schedule_url = request.headers.host + '/test/' + test_url;
 					response.redirect('/admin');
 				}
 		});
