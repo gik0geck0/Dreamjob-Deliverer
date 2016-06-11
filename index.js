@@ -77,42 +77,64 @@ app.get('/admin', function(request, response) {
     //Create variables to hold the values from the tables
     var test_array = [];
     var test_instances_array = [];
-   
-   //Query the tables so we can show admins the data
+
+    //add a flag to check if the first query finished
+    //since this is viewed in two queries, there is a chance of having a race condition
+    //The race condition should result in the page never loading
+    var first_query_complete = false;
+    
+    //Query the tables so we can show admins the data
+
     pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-		if (err) {
-			return console.error(err);
-		}
-		//Query tests table for everything but the file
-		client.query('SELECT title, description FROM tests', function(err, result) {
-			done();
-			if (err) {
-				console.error(err);
-				response.send("Error " + err);
-			}
-			else {
-				test_array = result.rows;
-			}
+    if (err) {
+        return console.error(err);
+    }
+    //Query tests table for everything but the file
+	client.query('SELECT title, description FROM tests', function(err, result) {
+		done();
+		if (err)
+			{ console.error(err); response.send("Error " + err); }
+		else
+			{ 
+                test_array = result.rows; 
+                if(first_query_complete)
+                {
+                    //render the page while passing the data
+                    response.render('pages/admin', {test_array: test_array, test_instances_array: test_instances_array});
+                }
+                else
+                {
+                    first_query_complete = true;
+                }
+            }
 		});
-		//Query the test_instances table for everything but the file
-		client.query('SELECT name, email, test_title, start_time, end_time, url FROM test_instances', function(err, result) {
-			done();
-			if (err) {
-				console.error(err);
-				response.send("Error " + err);
-			}
-			else {
-				test_instances_array = result.rows;
-			}
+    //Query the test_instances table for everything but the file
+    client.query('SELECT name, email, test_title, start_time, end_time, url FROM test_instances', function(err, result) {
+		done();
+		if (err)
+			{ console.error(err); response.send("Error " + err); }
+		else
+			{ 
+                test_instances_array = result.rows; 
+                //console.log(result.rows[3].start_time);
+                
+                
+                if(first_query_complete)
+                {
+                    //render the page while passing the data
+                    response.render('pages/admin', {test_array: test_array, test_instances_array: test_instances_array});
+                }
+                else
+                {
+                    first_query_complete = true;
+                }
+            }
 		});
     });
-    //render the page while passing the data
-	
-	response.render('pages/admin', {test_array: test_array, test_instances_array: test_instances_array});
 });
     
 app.get('/schedule', function(request, response) {
-	response.render('pages/schedule', {test_title: 'Hello alert'});
+	response.render('pages/schedule', {test_title: request.query.testname});
 });
 
 app.post('/schedule', function(request, response, next) {
@@ -181,23 +203,31 @@ app.get('/*', function (request, response) {
 });
 
 app.listen(app.get('port'), function() {
-	console.log('Node app is running on port', app.get('port'));
+	//console.log('Node app is running on port', app.get('port'));
 });
 
-//var webdriver = require('selenium-webdriver'),
- //   By = webdriver.By,
-  //  until = webdriver.until;
+// var selenium = require('selenium-webdriver');
+//    By = selenium.By,
+//   until = selenium.until;
+// var chai = require('chai');
+// chai.use = require('chai-as-promised');
+// var expect = chai.expect;
 
-//System.setProperty("webdriver.chrome.driver","./chromedriver");
+// //System.setProperty("webdriver.chrome.driver","./chromedriver");
 
-//var driver = new ChromeDriver();
-//
-//var driver = new webdriver.Builder()
-  //  .forBrowser('chrome')
-    //.build();
+// //var driver = new ChromeDriver();
+// //
+// var driver = new selenium.Builder()
+//   .forBrowser('chrome')
+// .build();
 
-//driver.get('localhost:5000');
-//driver.findElement(By.name('q')).sendKeys('webdriver');
-//driver.findElement(By.name('btnG')).click();
-//driver.wait(until.titleIs('webdriver - Google Search'), 1000);
-//driver.quit();
+// driver.get('localhost:5000');
+
+//     // expect(driver.getTitle()).to.eventually.contain
+//     //     'Dreamjoob Deliverer'
+// //driver.findElement(By.name('q')).sendKeys('webdriver');
+// //driver.click("create-new-test");
+// driver.findElement(By.id('create-new-test')).click();
+// driver.findElement(By.id('cancel')).click();
+// //driver.wait(until.titleIs('webdriver - Google Search'), 1000);
+// //driver.quit();

@@ -1,8 +1,8 @@
-function loadList(testname) {
+function loadTest(testtitle, testdescription) {
     $('#test-list').append(
-		`<a id='view-${testname}' class='list-group-item'>
-			<button class='badge' id='schedule-${testname}'>schedule</button>
-			${testname}
+		`<a id='view-${testtitle}' class='list-group-item'>
+			<button class='badge' id='schedule-${testtitle}'>schedule</button>
+			${testtitle} ${testdescription}
 		</a>`
 	);
 }
@@ -60,10 +60,13 @@ function addFinished(candidate, email, title, start, end) {
 	`);
 }
 
+function addInstance(candidate, email, title, start, end) {
+
+}
+
 $(document).ready(function(){
-	loadList('Test1');
-	loadList('Test2');
-	addScheduled('Tom', 'tom@gmail.com', 'Test1', '07-05-2016 7:00 am', '07-15-2016 7:00 am');
+	loadTestList();
+    addScheduled('Tom', 'tom@gmail.com', 'Test1', '07-05-2016 7:00 am', '07-15-2016 7:00 am');
 	addInProgress('Tom', 'tom@gmail.com', 'Test2', '06-05-2016 7:00 am', '07-05-2016 7:00 am');
 	addFinished('Tom', 'tom@gmail.com', 'Test1', '06-05-2016 7:00 am', '06-08-2016 9:00 am');
 	
