@@ -31,7 +31,7 @@
 			<form class='form' role='form' method='POST' name='test_form' id='test_form'>
             <!-- When rendering this page, it is important to always provide a value here 
                     otherwise the database will be sad -->
-            <input type='hidden' name='testtile' id='testtitle' value='<%= test_title %>' >
+            <input type='hidden' name='testtitle' id='testtitle' value='<%= test_title %>' >
 				<div class='form-group form-group-lg'>
 					<label for='candidatename'>Candidate Name: </label>
 					<input type='text' class='form-control' name='candidatename' id='candidatename'>
@@ -44,10 +44,12 @@
 				
 				<label for='starttime'>Start Date and Time:</label>
 				<div id='starttime'></div>
+				<input type='hidden' name='starttime' id='starttimehidden' value='' />
 				<br>
 				
 				<label for='endtime'>End Date and Time:</label>
 				<div id='endtime'></div>
+				<input type='hidden' name='endtime' id='endtimehidden' value='' />
 				<br>
 				
 				<div class='btn-group btn-group-justified'>

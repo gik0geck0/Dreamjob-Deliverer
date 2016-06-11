@@ -120,11 +120,12 @@ app.post('/schedule', function(request, response, next) {
     var candidate_email = request.body.candidateemail;
     var start_time = request.body.starttime;
     var end_time = request.body.endtime;
-    //TODO: Need to figure this part out
     var test_name = request.body.testtitle;
     
-    //TODO: create the url
-    var test_url = "not sure yet";
+    //Using crypto for the url should always result in a unique base64 string
+	//190 bytes results in 256 char string
+    var test_url = crypto.pseudoRandomBytes(190).toString('base64')
+		.replace(/\//g,'_').replace(/\+/g,'-');
     
     pg.connect(process.env.DATABASE_URL, function(err, client, done) {
 		if (err) {
