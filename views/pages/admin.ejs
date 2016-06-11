@@ -11,9 +11,18 @@
     
     <!-- Script for loading the test list -->
     <script>
-        loadList = function() {
+        loadTestList = function() {
             <% test_array.forEach(function(item) { %>
                 loadTest('<%= item.title %>', '<%= item.description %>');
+            <% }); %>
+        };
+    </script>
+    
+    <!-- Script for loading all of the test instances -->
+    <script>
+        loadTestInstances = function() {
+            <% test_instances_array.forEach(function(item) { %>
+                addInstance('<%= item.name %>', '<%= item.email %>', '<%= item.test_title %>', '<%= item.start_time %>', '<%= item.end_time %>');
             <% }); %>
         };
     </script>

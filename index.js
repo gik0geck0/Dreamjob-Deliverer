@@ -115,6 +115,9 @@ app.get('/admin', function(request, response) {
 		else
 			{ 
                 test_instances_array = result.rows; 
+                console.log(result.rows[3].start_time);
+                
+                
                 if(first_query_complete)
                 {
                     //render the page while passing the data
