@@ -60,10 +60,12 @@ function addFinished(candidate, email, title, start, end) {
 	`);
 }
 
+function addInstance(candidate, email, title, start, end) {
+
+}
+
 $(document).ready(function(){
-	//loadTest('Test1');
-	//loadTest('Test2');
-	loadList();
+	loadTestList();
     addScheduled('Tom', 'tom@gmail.com', 'Test1', '07-05-2016 7:00 am', '07-15-2016 7:00 am');
 	addInProgress('Tom', 'tom@gmail.com', 'Test2', '06-05-2016 7:00 am', '07-05-2016 7:00 am');
 	addFinished('Tom', 'tom@gmail.com', 'Test1', '06-05-2016 7:00 am', '06-08-2016 9:00 am');

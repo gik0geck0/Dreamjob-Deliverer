@@ -116,6 +116,9 @@ app.get('/admin', function(request, response) {
 		else
 			{ 
                 test_instances_array = result.rows; 
+                console.log(result.rows[3].start_time);
+                
+                
                 if(first_query_complete)
                 {
                     //render the page while passing the data
@@ -131,7 +134,7 @@ app.get('/admin', function(request, response) {
 });
     
 app.get('/schedule', function(request, response) {
-	response.render('pages/schedule', {test_title: 'Hello alert'});
+	response.render('pages/schedule', {test_title: request.query.testname});
 });
 
 app.post('/schedule', function(request, response, next) {
