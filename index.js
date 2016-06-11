@@ -2,6 +2,9 @@ var fs = require('fs');
 var pg = require('pg');
 var express = require('express');
 var app = express();
+var subapp = express();
+var test = express();
+var admin = express();
 
 //for unique url extensions
 var crypto = require('crypto');
@@ -26,10 +29,55 @@ app.set('port', (process.env.PORT || 5000));
 
 //set where files are
 app.use(express.static(__dirname + '/public'));
+subapp.use(express.static(__dirname + '/public'));
+test.use(express.static(__dirname + '/public'));
+admin.use(express.static(__dirname + '/public'));
+
+//mount the sub apps
+app.use('/app', subapp);
+subapp.use('/test', test);
+subapp.use('/admin', admin);
 
 //views is directory for all template files
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
+
+//test page index
+test.get('/', function(request, response) {
+	response.render('pages/index');
+});
+
+//test page for tests get request
+test.get('/*', function(request, response) {
+	var test_url = request.url.substring(1);
+	var query = "SELECT instructions, test_title, start_time, end_time FROM tests, test_instances WHERE test_title = title AND url = '" + test_url + "';";
+	
+	pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+		if (err) {
+			return console.error(err);
+		}
+		//Query tests table for everything but the file
+		client.query(query, function(err, result) {
+			done();
+			if (err) {
+				console.error(err);
+				response.send("Error " + err);
+			}
+			else {
+				var inst = result.rows;
+				if (inst.length < 1 || new Date(inst[0].start_time) > new Date() || new Date(inst[0].end_time) < new Date()) {
+					response.redirect('/app/test/');
+				}
+				else {
+					response.render('pages/test', {test_instance: inst[0]});
+				}
+			}
+		});
+	});
+});
+
+//test page post method
+//TODO
 
 //default page set to redirect to admin
 app.get('/', function(request, response) {
@@ -83,14 +131,6 @@ app.post('/create', upload.single('select_file'), function(request, response, ne
     });
 });
 
-//test page get method
-app.get('/test', function(request, response) {
-	response.render('pages/test', {deadline: '31/12/2016'} );
-});
-
-//test page post method
-//TODO
-
 //admin page get method
 app.get('/admin', function(request, response) {
 
@@ -129,7 +169,8 @@ app.get('/admin', function(request, response) {
 		client.query('SELECT title, description FROM tests', function(err, result) {
 			done();
 			if (err) {
-				console.error(err); response.send("Error " + err);
+				console.error(err);
+				response.send("Error " + err);
 			}
 			else { 
 				test_array = result.rows; 
@@ -146,7 +187,8 @@ app.get('/admin', function(request, response) {
 		client.query('SELECT name, email, test_title, start_time, end_time, url FROM test_instances', function(err, result) {
 			done();
 			if (err) {
-				console.error(err); response.send("Error " + err); 
+				console.error(err);
+				response.send("Error " + err); 
 			}
 			else { 
 				test_instances_array = result.rows; 
@@ -204,7 +246,7 @@ app.post('/schedule', function(request, response, next) {
 					//then redirect back to the admin page
 					success = true;
 					success_title = test_name;
-					schedule_url = request.headers.host + '/test/' + test_url;
+					schedule_url = request.headers.host + '/app/test/' + test_url;
 					response.redirect('/admin');
 				}
 		});

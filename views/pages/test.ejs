@@ -7,6 +7,10 @@
 	<script type='text/javascript' src='/js/build/pdf.js'></script>
 	<script type='text/javascript' src='/js/build/pdf.worker.js'></script>
 	
+	<script type='text/javascript'>
+		var end_time = '<%= test_instance.end_time %>';
+	</script>
+	
 	<!-- Test page script -->
 	<script type='text/javascript' src='/js/test.js'></script>
 </head>
@@ -14,7 +18,7 @@
 <body oncontextmenu='return false;'>
 
 <div class='container-fluid'>
-	<h2 style='text-align:center; padding:10px;'>&lt;&lt;test name here&gt;&gt;</h2>
+	<h2 style='text-align:center; padding:10px;'><%= test_instance.test_title %></h2>
 	
 	<div class='row' style='min-height:64px'>
 		<div class='col-md-2'></div>

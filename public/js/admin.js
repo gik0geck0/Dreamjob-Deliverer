@@ -1,8 +1,9 @@
 function loadTest(testtitle, testdescription) {
     $('#test-list').append(
 		`<a id='view-${testtitle}' class='list-group-item'>
-			<button class='badge' id='schedule-${testtitle}'>schedule</button>
-			${testtitle} ${testdescription}
+			<button class='btn btn-info pull-right' id='schedule-${testtitle}'>schedule</button>
+			<h4>${testtitle}<br/>
+			<small>${testdescription}</small></h4>
 		</a>`
 	);
 }

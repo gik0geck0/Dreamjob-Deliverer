@@ -113,8 +113,8 @@ $(document).ready(function(){
 		$('#file_name').val(filename);
 	});
 	
-	//TODO: this should be based off end time
-	initializeClock('time_remaining', '5/26/2216 0:12:00 UTC');
+	//start the timer until end time
+	initializeClock('time_remaining', end_time);
 	
 	//TODO: check for file on submission
 });
