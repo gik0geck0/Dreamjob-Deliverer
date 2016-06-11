@@ -77,13 +77,14 @@ app.get('/admin', function(request, response) {
     //Create variables to hold the values from the tables
     var test_array = [];
     var test_instances_array = [];
-    
+
     //add a flag to check if the first query finished
     //since this is viewed in two queries, there is a chance of having a race condition
     //The race condition should result in the page never loading
     var first_query_complete = false;
     
     //Query the tables so we can show admins the data
+
     pg.connect(process.env.DATABASE_URL, function(err, client, done) {
     if (err) {
         return console.error(err);
@@ -204,20 +205,28 @@ app.listen(app.get('port'), function() {
 	console.log('Node app is running on port', app.get('port'));
 });
 
-//var webdriver = require('selenium-webdriver'),
- //   By = webdriver.By,
-  //  until = webdriver.until;
+var selenium = require('selenium-webdriver');
+   By = selenium.By,
+  until = selenium.until;
+var chai = require('chai');
+chai.use = require('chai-as-promised');
+var expect = chai.expect;
 
 //System.setProperty("webdriver.chrome.driver","./chromedriver");
 
 //var driver = new ChromeDriver();
 //
-//var driver = new webdriver.Builder()
-  //  .forBrowser('chrome')
-    //.build();
+var driver = new selenium.Builder()
+  .forBrowser('chrome')
+.build();
 
-//driver.get('localhost:5000');
+driver.get('localhost:5000');
+
+    // expect(driver.getTitle()).to.eventually.contain
+    //     'Dreamjoob Deliverer'
 //driver.findElement(By.name('q')).sendKeys('webdriver');
-//driver.findElement(By.name('btnG')).click();
+//driver.click("create-new-test");
+driver.findElement(By.id('create-new-test')).click();
+driver.findElement(By.id('cancel')).click();
 //driver.wait(until.titleIs('webdriver - Google Search'), 1000);
 //driver.quit();
