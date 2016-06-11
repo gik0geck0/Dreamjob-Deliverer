@@ -224,5 +224,6 @@ driver.get('localhost:5000');
 //driver.findElement(By.name('q')).sendKeys('webdriver');
 //driver.click("create-new-test");
 driver.findElement(By.id('create-new-test')).click();
+driver.findElement(By.id('cancel')).click();
 //driver.wait(until.titleIs('webdriver - Google Search'), 1000);
 //driver.quit();
