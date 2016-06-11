@@ -58,22 +58,18 @@ function handlePages(page) {
 }
 /* End PDF stuff */
 
-$(document).ready(function(){
-	$('#file_name').click(function(){
-		$('#select_file').click();
-	});
-	
-	$('#select_file').change(function(){
-		var filename = $('#select_file').val().split('\\').pop().split('/').pop() || 'Select a file to upload';
-		$('#file_name').val(filename);
-	});
-	
-	initializeClock('time_remaining', '5/26/2216 0:12:00 UTC');
-});
-
 /* Start time remaining stuff */
 function getTimeRemaining(endtime){
 	var t = Date.parse(endtime) - Date.parse(new Date());
+	if (t <= 0) {
+		return {
+			'total': 0,
+			'days': 0,
+			'hours': 0,
+			'minutes': 0,
+			'seconds': 0
+		};
+	}
 	var seconds = Math.floor( (t/1000) % 60 );
 	var minutes = Math.floor( (t/1000/60) % 60 );
 	var hours = Math.floor( (t/(1000*60*60)) % 24 );
@@ -106,3 +102,19 @@ function initializeClock(id, endtime){
 	},1000);
 }
 /* End time remaining stuff */
+
+$(document).ready(function(){
+	$('#file_name').click(function(){
+		$('#select_file').click();
+	});
+	
+	$('#select_file').change(function(){
+		var filename = $('#select_file').val().split('\\').pop().split('/').pop() || 'Select a file to upload';
+		$('#file_name').val(filename);
+	});
+	
+	//TODO: this should be based off end time
+	initializeClock('time_remaining', '5/26/2216 0:12:00 UTC');
+	
+	//TODO: check for file on submission
+});
