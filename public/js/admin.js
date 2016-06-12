@@ -114,16 +114,16 @@ $(document).ready(function(){
 	
 	$('#test-list a button').click(function() {
 		gotoview = false;
-		window.location.href = '/schedule?testname=' + this.id.substring(9);
+		window.location.href = '/app/admin/schedule?testname=' + this.id.substring(9);
 	});
 	
 	$('#test-list a').click(function() {
 		if (gotoview)
-			window.location.href =  '/view?testname=' + this.id.substring(5);
+			window.location.href =  '/app/admin/view?testname=' + this.id.substring(5);
 	});
 	
     $('#create-new-test').click(function(){
-        window.location.href = '/create';
+        window.location.href = '/app/admin/create';
     });
 	
 	$('#tabs').tab();

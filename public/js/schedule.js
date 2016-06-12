@@ -46,4 +46,17 @@ $(document).ready(function(){
 	$('#endtimehidden').val(today.toUTCString());
 	
 	$('#test_form').submit(validateForm);
+	
+	$('#candidatename').keypress(function (e) {
+		if (e.which == 13) {
+			$('form#test_form').submit();
+		return false;
+	  }
+	});
+	$('#candidateemail').keypress(function (e) {
+		if (e.which == 13) {
+			$('form#test_form').submit();
+			return false;
+		}
+	});
 });

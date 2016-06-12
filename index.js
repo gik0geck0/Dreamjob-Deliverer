@@ -81,16 +81,16 @@ test.get('/*', function(request, response) {
 
 //default page set to redirect to admin
 app.get('/', function(request, response) {
-	response.redirect('/admin');
+	response.redirect('/app/admin');
 });
 
 //create page get method
-app.get('/create', function(request, response) {
+admin.get('/create', function(request, response) {
 	response.render('pages/create');
 });
 
 //create page post method
-app.post('/create', upload.single('select_file'), function(request, response, next) {
+admin.post('/create', upload.single('select_file'), function(request, response, next) {
     var test_name = request.body.title;
     var test_description = request.body.description;
     //needed for bytea
@@ -116,7 +116,7 @@ app.post('/create', upload.single('select_file'), function(request, response, ne
 						error_message = err;
 						success = false;
 						success_title = test_name;
-						response.redirect('/admin');
+						response.redirect('/app/admin');
 					}
 					else { 
 						//first unlink/remove the file we added to uploads/
@@ -124,7 +124,7 @@ app.post('/create', upload.single('select_file'), function(request, response, ne
 						//then redirect back to the admin page
 						success = true;
 						success_title = test_name;
-						response.redirect('/admin');
+						response.redirect('/app/admin');
 					}
 			});
         });
@@ -132,7 +132,7 @@ app.post('/create', upload.single('select_file'), function(request, response, ne
 });
 
 //admin page get method
-app.get('/admin', function(request, response) {
+subapp.get('/admin', function(request, response) {
 
     //Create variables to hold the values from the tables
     var test_array = [];
@@ -207,12 +207,12 @@ app.get('/admin', function(request, response) {
 });
 
 //schedule page get method
-app.get('/schedule', function(request, response) {
+admin.get('/schedule', function(request, response) {
 	response.render('pages/schedule', {test_title: request.query.testname});
 });
 
 //schedule page post method
-app.post('/schedule', function(request, response, next) {
+admin.post('/schedule', function(request, response, next) {
     var candidate_name = request.body.candidatename;
     var candidate_email = request.body.candidateemail;
     var start_time = request.body.starttime;
