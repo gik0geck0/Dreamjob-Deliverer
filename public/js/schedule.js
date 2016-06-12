@@ -12,7 +12,7 @@ function validateForm() {
     }
 }
 
-$(document).ready(function(){
+$(function() {
 	$('#starttime').datetimepicker({
 		inline: true,
 		sideBySide: true,
@@ -59,4 +59,9 @@ $(document).ready(function(){
 			return false;
 		}
 	});
+});
+
+$('input#cancel').click(function () {
+	window.history.back();
+	return false;
 });

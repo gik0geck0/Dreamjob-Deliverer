@@ -50,14 +50,13 @@ test.get('/', function(request, response) {
 //test page for tests get request
 test.get('/*', function(request, response) {
 	var test_url = request.url.substring(1);
-	var query = "SELECT instructions, test_title, start_time, end_time FROM tests, test_instances WHERE test_title = title AND url = '" + test_url + "';";
 	
 	pg.connect(process.env.DATABASE_URL, function(err, client, done) {
 		if (err) {
 			return console.error(err);
 		}
 		//Query tests table for everything but the file
-		client.query(query, function(err, result) {
+		client.query('SELECT instructions, test_title, start_time, end_time FROM tests, test_instances WHERE test_title = title AND url = $1', [test_url], function(err, result) {
 			done();
 			if (err) {
 				console.error(err);
@@ -221,6 +220,7 @@ admin.post('/schedule', function(request, response, next) {
     
     //Using crypto for the url should always result in a unique base64 string
 	//190 bytes results in 256 char string
+	//TODO: make sure this is not already in db
     var test_url = crypto.pseudoRandomBytes(190).toString('base64')
 		.replace(/\//g,'_').replace(/\+/g,'-');
     
