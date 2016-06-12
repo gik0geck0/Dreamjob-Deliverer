@@ -10,7 +10,7 @@ $(window).on('load', function() {
 	//TODO: set pdfScale based on screen size?
 	
 	//TODO: we have to get the path from the db via GET or POST or something?
-	PDFJS.getDocument('../pdfFiles/12HoleFinalPDF.pdf').then(function(pdf) {
+	PDFJS.getDocument(pdfAsArray).then(function(pdf) {
 		thePDF = pdf;
 		
 		numPages = pdf.numPages;

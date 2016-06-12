@@ -69,7 +69,16 @@ test.get('/*', function(request, response) {
 					response.redirect('/app/test/');
 				}
 				else {
-					response.render('pages/test', {test_instance: inst[0]});
+                var test_path = "public/pdfFiles/" + test_url.substr(250) + ".pdf"
+                var instr_str = inst[0].instructions.toString("base64");
+                    // fs.writeFile(test_path, inst[0].instructions, function(err) {
+                        // if(err) {
+                            // return console.log(err);
+                        // }
+                    // });
+                    test_path = ".." + test_path.substr(6);
+                    //console.log(test_path);
+					response.render('pages/test', {test_instance: inst[0], test_path: test_path, instr_data: instr_str});
 				}
 			}
 		});
