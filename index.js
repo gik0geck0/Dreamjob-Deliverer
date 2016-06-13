@@ -24,8 +24,8 @@ var error_message = null;
 
 //set up support for handling post requests
 var bodyParser = require('body-parser');
-app.use(bodyParser.json());       // to support JSON-encoded bodies
-app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+app.use(bodyParser.json());		// to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({	// to support URL-encoded bodies
     extended: true
 }));
 var multer = require('multer');
@@ -44,9 +44,6 @@ var viewURL = '/app/admin/view/';
 
 //set where files are
 app.use(express.static(__dirname + '/public'));
-// subapp.use(express.static(__dirname + '/public'));
-// test.use(express.static(__dirname + '/public'));
-// admin.use(express.static(__dirname + '/public'));
 
 //mount the sub apps
 app.use('/app', subapp);
@@ -90,11 +87,6 @@ test.get('/*', function(request, response) {
 				else {
                 var test_path = "public/pdfFiles/" + test_url.substr(250) + ".pdf"
                 var instr_str = inst[0].instructions.toString("base64");
-                    // fs.writeFile(test_path, inst[0].instructions, function(err) {
-                        // if(err) {
-                            // return console.log(err);
-                        // }
-                    // });
                     test_path = ".." + test_path.substr(6);
                     //console.log(test_path);
 					response.render('pages/test', {test_instance: inst[0], test_path: test_path, instr_data: instr_str});
@@ -263,10 +255,7 @@ admin.post('/schedule', function(request, response, next) {
 					// success_title = test_name;
 					response.redirect(adminURL);
 				}
-				else { 
-					//first unlink/remove the file we added to uploads/
-					// fs.unlink(request.file.path); //TODO: is this needed, caused an error
-					
+				else {
 					//then redirect back to the admin page
 					success = true;
 					success_title = test_name;
@@ -312,6 +301,7 @@ admin.get('/reschedule/*', function(request, response) {
 
 //reschedule page post method
 admin.post('/reschedule/*', function(request, response, next) {
+	//test_url is everything after /reschedule/
 	var test_url = request.url.substring(12);
     var candidate_name = request.body.candidatename == '' ? null : request.body.candidatename;
     var candidate_email = request.body.candidateemail == '' ? null : request.body.candidateemail;
@@ -334,15 +324,47 @@ admin.post('/reschedule/*', function(request, response, next) {
 					// success_title = test_name;
 					response.redirect(adminURL);
 				}
-				else { 
-					//first unlink/remove the file we added to uploads/
-					// fs.unlink(request.file.path); //TODO: is this needed, caused an error
-					
+				else {
 					//then redirect back to the admin page
 					success = true;
 					success_title = test_name;
 					schedule_url = request.headers.origin + testURL + test_url;
 					response.redirect(adminURL);
+				}
+		});
+    });
+});
+
+//view page get method
+admin.get('/view', function(request, response, next) {
+	test_title = request.query.testname;
+	
+	pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+		if (err) {
+			return console.error(err);
+		}
+        client.query('SELECT instructions FROM tests WHERE title = $1', 
+			[test_title],
+			function(err, result) {
+				done();
+				if (err) {
+					console.error(err);
+					error_message = err;
+					success = false;
+					// success_title = test_name;
+					response.redirect(adminURL);
+				}
+				else {
+					if (result.rows.length < 1) {
+						success = false;
+						error_message = 'Error viewing test. The test "' + test_title + '" doesn\'t exist.';
+						response.redirect(adminURL);
+					}
+					else {
+						response.setHeader('Content-disposition', 'inline; filename="' + test_title + '.pdf"');
+						response.setHeader('Content-type', 'application/pdf');
+						response.send(result.rows[0].instructions);
+					}
 				}
 		});
     });

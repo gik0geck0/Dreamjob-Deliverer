@@ -7,13 +7,14 @@
 	<script type='text/javascript' src='/js/build/pdf.js'></script>
 	<script type='text/javascript' src='/js/build/pdf.worker.js'></script>
     
-    <!-- We must load give PDF.js the bytea data of the pdf from the database -->
-    <script>
-        var pdfPath = '<%= test_path %>';
-        
-        
-        
+    <script type='text/javascript'>
+		var end_time = '<%= test_instance.end_time %>';
+		
+		<!-- We must load give PDF.js the bytea data of the pdf from the database -->
+		var pdfPath = '<%= test_path %>';
         var BASE64_MARKER = ';base64,';
+        var pdfAsDataUri = "data:application/pdf;base64," + '<%= instr_data %>';
+        var pdfAsArray = convertDataURIToBinary(pdfAsDataUri);
 
         function convertDataURIToBinary(dataURI) {
             var base64Index = dataURI.indexOf(BASE64_MARKER) + BASE64_MARKER.length;
@@ -27,17 +28,6 @@
             }
             return array;
         }
-        
-        
-        var pdfAsDataUri = "data:application/pdf;base64," + '<%= instr_data %>';
-        var pdfAsArray = convertDataURIToBinary(pdfAsDataUri);
-    </script>
-    
-    
-    
-	
-	<script type='text/javascript'>
-		var end_time = '<%= test_instance.end_time %>';
 	</script>
 	
 	<!-- Test page script -->
