@@ -9,6 +9,7 @@ var createURL = '/app/admin/create/';
 var scheduleURL = '/app/admin/schedule/';
 var rescheduleURL = '/app/admin/reschedule/';
 var viewURL = '/app/admin/view/';
+var downloadURL = '/app/admin/download/'
 
 $(function() {
 	//Cancel buttons go back a page

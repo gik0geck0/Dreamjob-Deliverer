@@ -47,7 +47,7 @@ function addInstance(candidate, email, title, start, end, uri) {
 			
 	var downloadHTML = 
 		"<td class='glyph-td' title='Download test submission'>\
-			<a href='#'>\
+			<a href='" + downloadURL + uri + "'>\
 				<span class='glyph glyphicon glyphicon-save'></span>\
 			</a>\
 		</td>";
