@@ -10,14 +10,24 @@
 	<link rel='stylesheet' type='text/css' href='/css/bootstrap-datetimepicker.min.css'>
 	<script type='text/javascript' src='/js/bootstrap-datetimepicker.min.js'></script>
 	
-	<!-- Schedule page script -->
-	<script type='text/javascript' src='/js/schedule.js'></script>
+	<!-- Scripts using node.js variables (must be in .ejs) -->
+	<script type='text/javascript'>
+		//Get initial start and end
+		var init_name = '<%= test_instance.name %>';
+		var init_email = '<%= test_instance.email %>';
+		var init_start = new Date('<%= test_instance.start_time %>');
+		var init_end = new Date('<%= test_instance.end_time %>');
+	</script>
+	
+	<!-- Reschedule page script -->
+	<!-- Must be after all other scripts -->
+	<script type='text/javascript' src='/js/reschedule.js'></script>
 </head>
 
 <body>
 
 <div class='container-fluid'>
-	<h2 style='text-align:center; padding:10px;'><%= test_title %></h2>
+	<h2 style='text-align:center; padding:10px;'><%= test_instance.test_title %></h2>
 
 	<div class='row'>
 		<div class='col-md-2'></div>
@@ -26,15 +36,15 @@
 			<!-- Upload field and button -->
 			<form class='form' role='form' method='POST' name='test_form' id='test_form'>
 				<!-- When rendering this page, it is important to always provide a value here otherwise the database will be sad -->
-				<input type='hidden' name='testtitle' id='testtitle' value='<%= test_title %>'>
+				<input type='hidden' name='testtitle' id='testtitle' value='<%= test_instance.test_title %>'>
 				<div class='form-group form-group-lg'>
 					<label for='candidatename'>Candidate Name: </label>
-					<input type='text' class='form-control' name='candidatename' id='candidatename' maxlength='256' autofocus>
+					<input type='text' class='form-control' name='candidatename' id='candidatename' maxlength='256' value='<%= test_instance.name %>' autofocus>
 				</div>
 				
 				<div class='form-group form-group-lg'>
 					<label for='candidateemail'>Candidate Email: </label>
-					<input type='text' class='form-control' name='candidateemail' id='candidateemail' maxlength='256'>
+					<input type='text' class='form-control' name='candidateemail' id='candidateemail' maxlength='256' value='<%= test_instance.email %>'>
 				</div>
 				
 				<label for='starttime'>Start Date and Time:</label>
