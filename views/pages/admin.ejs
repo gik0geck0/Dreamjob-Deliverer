@@ -3,9 +3,10 @@
 <head>
 	<% include ../partials/header.ejs %>
     
-    <!-- Script for loading the test list -->
+	<!-- Scripts using node.js variables (must be in .ejs) -->
     <script type='text/javascript'>
         $(function() {
+			<!-- Load the test list -->
             <% test_array.forEach(function(item) { %>
 				var desc = '';
 				<% item.description.split(/(?:\r\n|\r|\n)/g).forEach(function(val) { %>
@@ -13,21 +14,13 @@
 				<% }); %>
                 loadTest('<%= item.title %>', desc);
             <% }); %>
-        });
-    </script>
-    
-    <!-- Script for loading all of the test instances -->
-    <script type='text/javascript'>
-        $(function() {
+		
+			<!-- Load all of the test instances -->
             <% test_instances_array.forEach(function(item) { %>
-                addInstance('<%= item.name %>', '<%= item.email %>', '<%= item.test_title %>', '<%= item.start_time %>', '<%= item.end_time %>');
+                addInstance('<%= item.name %>', '<%= item.email %>', '<%= item.test_title %>', '<%= item.start_time %>', '<%= item.end_time %>', '<%= item.url %>');
             <% }); %>
-        });
-    </script>
-	
-	<!-- Script for displaying whether the database was successfully updated -->
-	<script type='text/javascript'>
-		$(function() {
+			
+			<!-- Display whether the database was successfully updated or not -->
 			$('#success-fail').html(
 				<% if (success != null) {
 					if (success) { %>
@@ -50,7 +43,7 @@
 							"<a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>" + 
 							"<strong>Fail!</strong><br/>" + 
 							<% if (error_message != null) { %>
-								"<%= error_message %><br/>" + 
+								"<%= error_message -%><br/>" + 
 								"Please try again." + 
 							<% }
 							else { %>
@@ -69,7 +62,6 @@
 </head>
 
 <body>
-
 <div class='container-fluid'>
 	<div id='top-row' class='row'>
 		<div class='col-md-2'></div>
@@ -79,9 +71,9 @@
 			
 			<div id='success-fail'></div>
 			
-			<span class='inline'>
+			<!-- <span class='inline'>
 				<h3 style='text-align:center;'>Test Library</h3>
-			</span>
+			</span> -->
 			<div class='btn-group inline pull-left'>
 				<button class='btn btn-primary' id='create-new-test'>Create New Test</button>
 			</div>
@@ -120,6 +112,7 @@
 								<th>Start Time</th>
 								<th>End Time</th>
 								<th></th>
+								<th></th>
 							</tr>
 						</thead>
 						<tbody id='scheduled-tbody'>
@@ -134,6 +127,7 @@
 								<th>Test</th>
 								<th>Start Time</th>
 								<th>End Time</th>
+								<th></th>
 								<th></th>
 							</tr>
 						</thead>
@@ -151,6 +145,7 @@
 								<th>End Time</th>
 								<th></th>
 								<th></th>
+								<th></th>
 							</tr>
 						</thead>
 						<tbody id='finished-tbody'>
@@ -163,6 +158,5 @@
 		<div class='col-md-2'></div>
 	</div>
 </div>
-
 </body>
 </html>

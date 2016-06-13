@@ -26,3 +26,17 @@
 	position: absolute;
 	right: 1.5em;
 }
+
+.popover-content {
+	overflow-x: auto;
+	white-space: nowrap;
+}
+
+h4 {
+	word-wrap: break-word;
+}
+
+button[id^=schedule-] {
+	padding: 0.5em;
+	margin-top: 1em;
+}

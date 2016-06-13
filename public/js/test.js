@@ -104,16 +104,16 @@ function initializeClock(id, endtime){
 /* End time remaining stuff */
 
 $(function() {
+	//File selection input
 	$('#file_name').click(function() {
 		$('#select_file').click();
 	});
-	
 	$('#select_file').change(function() {
 		var filename = $('#select_file').val().split('\\').pop().split('/').pop() || 'Select a file to upload';
 		$('#file_name').val(filename);
 	});
 	
-	//start the timer until end time
+	//Start the timer until end time
 	initializeClock('time_remaining', end_time);
 	
 	//TODO: check for file on submission
