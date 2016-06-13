@@ -1,6 +1,3 @@
-var today = new Date();
-today.setUTCSeconds(0);
-
 //Make sure there is either a name or email
 function validateForm() {
     var name = $('#candidatename').val();
@@ -17,7 +14,7 @@ $(function() {
 		inline: true,
 		sideBySide: true,
 		useCurrent: false,
-		defaultDate: today,
+		defaultDate: init_start,
 		stepping: 1
 	});
 	
@@ -26,13 +23,13 @@ $(function() {
 		inline: true,
 		sideBySide: true,
 		useCurrent: false,
-		defaultDate: today,
+		defaultDate: init_end,
 		stepping: 1
 	});
 	
 	//Link the pickers so that start <= end
-	$('#starttime').data('DateTimePicker').maxDate(today);
-	$('#endtime').data('DateTimePicker').minDate(today);
+	$('#starttime').data('DateTimePicker').maxDate(init_end);
+	$('#endtime').data('DateTimePicker').minDate(init_start);
 	
 	//Relink if one changes
 	$('#starttime').on('dp.change', function (e) {
@@ -45,8 +42,8 @@ $(function() {
 	});
 	
 	//Set the values of the hidden inputs
-	$('#starttimehidden').val(today.toUTCString());
-	$('#endtimehidden').val(today.toUTCString());
+	$('#starttimehidden').val(init_start.toUTCString());
+	$('#endtimehidden').val(init_end.toUTCString());
 	
 	//Validate on submission
 	$('#test_form').submit(validateForm);
