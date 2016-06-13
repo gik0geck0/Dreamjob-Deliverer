@@ -20,7 +20,7 @@
 			<form class='form' role='form' method='POST' name='test_form' id='test_form'  enctype='multipart/form-data'>
 				<div class='form-group form-group-lg'>
 					<label for='title'>Test Title (20 characters max):</label>
-					<input type='text' maxlength='20' class='form-control' name='title' id='title' required>
+					<input type='text' maxlength='20' class='form-control' name='title' id='title' required autofocus>
 				</div>
 				
 				<div class='form-group'>
@@ -45,7 +45,7 @@
 						<input class='btn btn-primary' type='submit' id='submit' value='Submit' />
 					</div>
 					<div class='btn-group btn-group-lg'>
-						<input class='btn btn-primary' type='button' id='cancel' value='Cancel' onclick='window.history.back();' />
+						<input class='btn btn-primary' type='button' id='cancel' value='Cancel' />
 					</div>
 				</div>
 			</form>

@@ -85,7 +85,7 @@ function getTimeRemaining(endtime){
 
 function initializeClock(id, endtime){
 	var clock = document.getElementById(id);
-	var timeinterval = setInterval(function(){
+	var timeinterval = setInterval(function() {
 		var t = getTimeRemaining(endtime);
 		var remaining = '';
 		if (t.days > 0) remaining += t.days + 'd ';
@@ -103,12 +103,12 @@ function initializeClock(id, endtime){
 }
 /* End time remaining stuff */
 
-$(document).ready(function(){
-	$('#file_name').click(function(){
+$(function() {
+	$('#file_name').click(function() {
 		$('#select_file').click();
 	});
 	
-	$('#select_file').change(function(){
+	$('#select_file').change(function() {
 		var filename = $('#select_file').val().split('\\').pop().split('/').pop() || 'Select a file to upload';
 		$('#file_name').val(filename);
 	});

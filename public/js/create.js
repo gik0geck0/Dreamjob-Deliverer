@@ -1,11 +1,11 @@
 var fileUploadText = 'Select an instructions file to upload';
 
-$(document).ready(function(){
-	$('#file_name').click(function(){
+$(function() {
+	$('#file_name').click(function() {
 		$('#select_file').click();
 	});
 	
-	$('#select_file').change(function(){
+	$('#select_file').change(function() {
 		var filename = $('#select_file').val().split('\\').pop().split('/').pop() || fileUploadText;
 		$('#file_name').val(filename);
 	});

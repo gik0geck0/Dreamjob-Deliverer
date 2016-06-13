@@ -1,64 +1,64 @@
 function loadTest(testtitle, testdescription) {
     $('#test-list').append(
-		`<a id='view-${testtitle}' class='list-group-item'>
-			<button class='btn btn-info pull-right' id='schedule-${testtitle}'>schedule</button>
-			<h4>${testtitle}<br/>
-			<small>${testdescription}</small></h4>
-		</a>`
+		"<a id='view-" + testtitle + "' class='list-group-item'>\
+			<button class='btn btn-info pull-right' id='schedule-" + testtitle + "'>schedule</button>\
+			<h4>" + testtitle + "<br/>\
+			<small>" + testdescription + "</small></h4>\
+		</a>"
 	);
 }
 
 function addScheduled(candidate, email, title, start, end) {
 	$('#scheduled-tbody').append(
-		`<tr>
-			<td>${candidate}${email}</td>
-			<td>${title}</td>
-			<td>${start}</td>
-			<td>${end}</td>
-			<td class='glyph-td' title='Reschedule test times'>
-				<a href='#'>
-					<span class='glyph glyphicon glyphicon-calendar'></span>
-				</a>
-			</td>
-		</tr>`
+		"<tr>\
+			<td>" + candidate + email + "</td>\
+			<td>" + title + "</td>\
+			<td>" + start + "</td>\
+			<td>" + end + "</td>\
+			<td class='glyph-td' title='Reschedule test times'>\
+				<a href='#'>\
+					<span class='glyph glyphicon glyphicon-calendar'></span>\
+				</a>\
+			</td>\
+		</tr>"
 	);
 }
 
 function addInProgress(candidate, email, title, start, end) {
 	$('#in-progress-tbody').append(
-		`<tr>
-			<td>${candidate}${email}</td>
-			<td>${title}</td>
-			<td>${start}</td>
-			<td>${end}</td>
-			<td class='glyph-td' title='Reschedule test times'>
-				<a href='#'>
-					<span class='glyph glyphicon glyphicon-calendar'></span>
-				</a>
-			</td>
-		</tr>`
+		"<tr>\
+			<td>" + candidate + email + "</td>\
+			<td>" + title + "</td>\
+			<td>" + start + "</td>\
+			<td>" + end + "</td>\
+			<td class='glyph-td' title='Reschedule test times'>\
+				<a href='#'>\
+					<span class='glyph glyphicon glyphicon-calendar'></span>\
+				</a>\
+			</td>\
+		</tr>"
 	);
 }
 
 function addFinished(candidate, email, title, start, end) {
 	$('#finished-tbody').append(
-		`<tr>
-			<td>${candidate}${email}</td>
-			<td>${title}</td>
-			<td>${start}</td>
-			<td>${end}</td>
-			<td class='glyph-td' title='Reschedule test times'>
-				<a href='#'>
-					<span class='glyph glyphicon glyphicon-calendar'></span>
-				</a>
-			</td>
-			<td class='glyph-td' title='Download test submission'>
-				<a href='#'>
-					<span class='glyph glyphicon glyphicon-save'></span>
-				</a>
-			</td>
-		</tr>
-	`);
+		"<tr>\
+			<td>" + candidate + email + "</td>\
+			<td>" + title + "</td>\
+			<td>" + start + "</td>\
+			<td>" + end + "</td>\
+			<td class='glyph-td' title='Reschedule test times'>\
+				<a href='#'>\
+					<span class='glyph glyphicon glyphicon-calendar'></span>\
+				</a>\
+			</td>\
+			<td class='glyph-td' title='Download test submission'>\
+				<a href='#'>\
+					<span class='glyph glyphicon glyphicon-save'></span>\
+				</a>\
+			</td>\
+		</tr>"
+	);
 }
 
 function addInstance(candidate, email, title, start, end) {
@@ -91,28 +91,10 @@ function addInstance(candidate, email, title, start, end) {
 	}
 }
 
-function loadTestList() {
-	//never called hopefully
-	loadTest('This should not be displayed', 'improper page loaded');
-}
-
-function loadTestInstancesList() {
-	//never called hopefully
-	addInstance('This should not be displayed', '', 'improper page loaded', new Date(1), new Date(1));
-}
-
-function indicateSuccess() {
-	//do nothing
-}
-
-$(document).ready(function(){
-	loadTestList();
-	loadTestInstancesList();
-	indicateSuccess();
-	
+$(function(){
 	var gotoview = true;
 	
-	$('#test-list a button').click(function() {
+	$('#test-list a > button').click(function() {
 		gotoview = false;
 		window.location.href = '/app/admin/schedule?testname=' + this.id.substring(9);
 	});
@@ -125,6 +107,31 @@ $(document).ready(function(){
     $('#create-new-test').click(function(){
         window.location.href = '/app/admin/create';
     });
+	
+	$('#alert-fail').on('closed.bs.alert', function(){
+		$(window).trigger('resize');
+	});
+	
+	$('#alert-success').on('closed.bs.alert', function(){
+		$(window).trigger('resize');
+	});
+	
+	$('#alert-success').click(function() {
+		var span = document.getElementById('url-text');
+		var range = document.createRange();
+		range.setStartBefore(span.firstChild);
+		range.setEndAfter(span.lastChild);
+		var sel = window.getSelection();
+		sel.removeAllRanges();
+		sel.addRange(range);
+		try {
+			var successful = document.execCommand('copy');
+			var msg = successful ? 'successful' : 'unsuccessful';
+			console.log('URL copy was ' + msg);
+		} catch (err) {
+			console.error('Unable to copy URL');
+		}
+	});
 	
 	$('#tabs').tab();
 	
