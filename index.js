@@ -66,6 +66,7 @@ test.get('/', function(request, response) {
 
 //test page for tests get request
 test.get('/*', function(request, response) {
+	//test_url is everything after last /
 	var test_url = request.url.substring(1);
 	
 	pg.connect(process.env.DATABASE_URL, function(err, client, done) {
@@ -268,6 +269,7 @@ admin.post('/schedule', function(request, response, next) {
 
 //reschedule page get method
 admin.get('/reschedule/*', function(request, response) {
+	//test_url is everything after /reschedule/
 	var test_url = request.url.substring(12);
 	
 	pg.connect(process.env.DATABASE_URL, function(err, client, done) {
@@ -364,6 +366,42 @@ admin.get('/view', function(request, response, next) {
 						response.setHeader('Content-disposition', 'inline; filename="' + test_title + '.pdf"');
 						response.setHeader('Content-type', 'application/pdf');
 						response.send(result.rows[0].instructions);
+					}
+				}
+		});
+    });
+});
+
+//download page get method
+admin.get('/download/*', function(request, response, next) {
+	//test_url is everything after /download/
+	var test_url = request.url.substring(10);
+	
+	pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+		if (err) {
+			return console.error(err);
+		}
+        client.query('SELECT latest_submission, submission_filename FROM test_instances WHERE url = $1', 
+			[test_url],
+			function(err, result) {
+				done();
+				if (err) {
+					console.error(err);
+					error_message = err;
+					success = false;
+					// success_title = test_name;
+					response.redirect(adminURL);
+				}
+				else {
+					if (result.rows.length < 1 || result.rows[0].latest_submission == null || result.rows[0].submission_filename == null) {
+						success = false;
+						error_message = 'Error downloading test submission. There is no submission that matches the URL extension ' + test_url;
+						response.redirect(adminURL);
+					}
+					else {
+						response.setHeader('Content-disposition', 'inline; filename="' + result.rows[0].submission_filename + '"');
+						// response.setHeader('Content-type', 'application/pdf');
+						response.send(result.rows[0].latest_submission);
 					}
 				}
 		});
