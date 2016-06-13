@@ -387,30 +387,3 @@ app.get('/*', function (request, response) {
 app.listen(app.get('port'), function() {
 	console.log('Node app is running on port', app.get('port'));
 });
-
-//Selenium function testing
-// var selenium = require('selenium-webdriver');
-//    By = selenium.By,
-//   until = selenium.until;
-// var chai = require('chai');
-// chai.use = require('chai-as-promised');
-// var expect = chai.expect;
-
-// //System.setProperty("webdriver.chrome.driver","./chromedriver");
-
-// //var driver = new ChromeDriver();
-// //
-// var driver = new selenium.Builder()
-//   .forBrowser('chrome')
-// .build();
-
-// driver.get('localhost:5000');
-
-//     // expect(driver.getTitle()).to.eventually.contain
-//     //     'Dreamjoob Deliverer'
-// //driver.findElement(By.name('q')).sendKeys('webdriver');
-// //driver.click("create-new-test");
-// driver.findElement(By.id('create-new-test')).click();
-// driver.findElement(By.id('cancel')).click();
-// //driver.wait(until.titleIs('webdriver - Google Search'), 1000);
-// //driver.quit();
