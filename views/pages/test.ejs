@@ -51,12 +51,12 @@
 		
 		<div class='col-sm-6 col-md-4'>
 			<!-- Upload field and button -->
-			<form class='form' role='form' method='post' name='test_form' id='test_form'>
+			<form class='form' role='form' method='POST' name='test_form' id='test_form' enctype='multipart/form-data'>
 				<div class='input-group input-group-lg'>
 					<label class='input-group-btn'>
 						<span class='btn btn-default'>
 							Browse
-							<input class='form-control-static' type='file' id='select_file' style='display:none' required />
+							<input class='form-control-static' type='file' accept='*' id='select_file' name='select_file' style='display:none' required />
 						</span>
 					</label>
 					<input class='form-control' type='text' id='file_name' value='Select a file to upload' readonly />
