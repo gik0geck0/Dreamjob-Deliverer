@@ -34,3 +34,15 @@ describe 'Dreamjob Deliverer Tests', ->
     @driver.findElement(id: 'create-new-test').click()
     @driver.findElement(id: 'cancel').click()
     expect(@driver.getCurrentUrl()).to.eventually.equal 'http://localhost:5000/app/admin/'
+
+  it 'has the Scheduled tests tab', ->
+    text = @driver.findElement(linkText: 'Scheduled').getText()
+    expect(text).to.eventually.equal 'Scheduled'
+
+  it 'has the In-Progress tests tab', ->
+    text = @driver.findElement(linkText: 'In-Progress').getText()
+    expect(text).to.eventually.equal 'In-Progress'
+
+  it 'has the Finished tests tab', ->
+    text = @driver.findElement(linkText: 'Finished').getText()
+    expect(text).to.eventually.equal 'Finished'
