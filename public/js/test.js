@@ -8,8 +8,8 @@ PDFJS.disableStream = true;
 
 $(window).on('load', function() {
 	//TODO: set pdfScale based on screen size?
-	
-	//TODO: we have to get the path from the db via GET or POST or something?
+
+    //Load the pdfAsArray from the ejs
 	PDFJS.getDocument(pdfAsArray).then(function(pdf) {
 		thePDF = pdf;
 		
