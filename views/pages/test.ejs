@@ -6,6 +6,35 @@
 	<!-- PDF js for displaying in canvas -->
 	<script type='text/javascript' src='/js/build/pdf.js'></script>
 	<script type='text/javascript' src='/js/build/pdf.worker.js'></script>
+    
+    <!-- We must load give PDF.js the bytea data of the pdf from the database -->
+    <script>
+        var pdfPath = '<%= test_path %>';
+        
+        
+        
+        var BASE64_MARKER = ';base64,';
+
+        function convertDataURIToBinary(dataURI) {
+            var base64Index = dataURI.indexOf(BASE64_MARKER) + BASE64_MARKER.length;
+            var base64 = dataURI.substring(base64Index);
+            var raw = window.atob(base64);
+            var rawLength = raw.length;
+            var array = new Uint8Array(new ArrayBuffer(rawLength));
+
+            for(var i = 0; i < rawLength; i++) {
+                array[i] = raw.charCodeAt(i);
+            }
+            return array;
+        }
+        
+        
+        var pdfAsDataUri = "data:application/pdf;base64," + '<%= instr_data %>';
+        var pdfAsArray = convertDataURIToBinary(pdfAsDataUri);
+    </script>
+    
+    
+    
 	
 	<script type='text/javascript'>
 		var end_time = '<%= test_instance.end_time %>';
