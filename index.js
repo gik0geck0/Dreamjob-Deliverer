@@ -287,7 +287,7 @@ admin.get('/reschedule/*', function(request, response) {
 			else {
 				var inst = result.rows;
 				if (inst.length < 1) {
-					error_message = 'Error rescheduling test. There is no test that matches the URL extension<br>' + test_url;
+					error_message = 'Error rescheduling test. There is no test that matches the URL extension ' + test_url;
 					success = false;
 					response.redirect(adminURL);
 				}
@@ -369,36 +369,6 @@ admin.get('/view', function(request, response, next) {
 		});
     });
 });
-
-/*** Pages for testing functionality
-//test using node modules
-var cool = require('cool-ascii-faces');
-app.get('/cool', function(request, response) {
-	response.send(cool());
-});
-
-//test environment vars
-app.get('/times', function(request, response) {
-	var result = ''
-	var times = process.env.TIMES || 5
-	for (i=0; i < times; i++)
-		result += i + ' ';
-	response.send(result);
-});
-
-//test connecting to database
-app.get('/db', function (request, response) {
-	pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-	client.query('SELECT * FROM test_table', function(err, result) {
-		done();
-		if (err)
-			{ console.error(err); response.send("Error " + err); }
-		else
-			{ response.render('pages/db', {results: result.rows} ); }
-		});
-	});
-});
-***/
 
 //redirects bad url extensions to default page
 app.get('/*', function (request, response) {
