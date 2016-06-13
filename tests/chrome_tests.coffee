@@ -46,3 +46,7 @@ describe 'Dreamjob Deliverer Tests', ->
   it 'has the Finished tests tab', ->
     text = @driver.findElement(linkText: 'Finished').getText()
     expect(text).to.eventually.equal 'Finished'
+    
+  it 'finds and gets routed to a schedule button on the page', ->
+    @driver.findElement(xpath: '//div[@id="test-list"]/a[1]/button').click()
+    expect(@driver.getCurrentUrl()).to.eventually.contain 'http://localhost:5000/app/admin/schedule'
