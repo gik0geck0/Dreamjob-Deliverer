@@ -79,7 +79,7 @@ $(function(){
 	});
 	$('#test-list a').click(function() {
 		if (gotoview)
-			window.location.href =  viewURL + '?testname=' + this.id.substring(5);
+			window.location.href =  viewURL + '?testname=' + encodeURIComponent(this.id.substring(5));
 	});
 	
 	//Redirect to /create

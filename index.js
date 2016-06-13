@@ -24,8 +24,8 @@ var error_message = null;
 
 //set up support for handling post requests
 var bodyParser = require('body-parser');
-app.use(bodyParser.json());       // to support JSON-encoded bodies
-app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+app.use(bodyParser.json());		// to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({	// to support URL-encoded bodies
     extended: true
 }));
 var multer = require('multer');
@@ -44,9 +44,6 @@ var viewURL = '/app/admin/view/';
 
 //set where files are
 app.use(express.static(__dirname + '/public'));
-// subapp.use(express.static(__dirname + '/public'));
-// test.use(express.static(__dirname + '/public'));
-// admin.use(express.static(__dirname + '/public'));
 
 //mount the sub apps
 app.use('/app', subapp);
@@ -101,8 +98,7 @@ test.get('/*', function(request, response) {
 test.post('/*', upload.single('select_file'), function(request, response, next){
     var test_data = '\\x';
 	var test_url = request.url.substring(1);
-    console.log(request.body);
-    console.log(request.file);
+    var test_filename = request.file.originalname;
     
     //time to read the file
     fs.readFile(request.file.path, 'hex', function (err,data) {
@@ -116,8 +112,8 @@ test.post('/*', upload.single('select_file'), function(request, response, next){
 			if (err) {
 				return console.error(err);
 			}
-            client.query('UPDATE test_instances SET latest_submission = $1 WHERE url = $2',
-				[test_data, test_url],
+            client.query('UPDATE test_instances SET latest_submission = $1, submission_filename = $2 WHERE url = $3',
+				[test_data, test_filename, test_url],
 				function(err, result) {
 					done();
 					if (err) {
@@ -297,10 +293,7 @@ admin.post('/schedule', function(request, response, next) {
 					// success_title = test_name;
 					response.redirect(adminURL);
 				}
-				else { 
-					//first unlink/remove the file we added to uploads/
-					// fs.unlink(request.file.path); //TODO: is this needed, caused an error
-					
+				else {
 					//then redirect back to the admin page
 					success = true;
 					success_title = test_name;
@@ -346,6 +339,7 @@ admin.get('/reschedule/*', function(request, response) {
 
 //reschedule page post method
 admin.post('/reschedule/*', function(request, response, next) {
+	//test_url is everything after /reschedule/
 	var test_url = request.url.substring(12);
     var candidate_name = request.body.candidatename == '' ? null : request.body.candidatename;
     var candidate_email = request.body.candidateemail == '' ? null : request.body.candidateemail;
@@ -368,15 +362,47 @@ admin.post('/reschedule/*', function(request, response, next) {
 					// success_title = test_name;
 					response.redirect(adminURL);
 				}
-				else { 
-					//first unlink/remove the file we added to uploads/
-					// fs.unlink(request.file.path); //TODO: is this needed, caused an error
-					
+				else {
 					//then redirect back to the admin page
 					success = true;
 					success_title = test_name;
 					schedule_url = request.headers.origin + testURL + test_url;
 					response.redirect(adminURL);
+				}
+		});
+    });
+});
+
+//view page get method
+admin.get('/view', function(request, response, next) {
+	test_title = request.query.testname;
+	
+	pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+		if (err) {
+			return console.error(err);
+		}
+        client.query('SELECT instructions FROM tests WHERE title = $1', 
+			[test_title],
+			function(err, result) {
+				done();
+				if (err) {
+					console.error(err);
+					error_message = err;
+					success = false;
+					// success_title = test_name;
+					response.redirect(adminURL);
+				}
+				else {
+					if (result.rows.length < 1) {
+						success = false;
+						error_message = 'Error viewing test. The test "' + test_title + '" doesn\'t exist.';
+						response.redirect(adminURL);
+					}
+					else {
+						response.setHeader('Content-disposition', 'inline; filename="' + test_title + '.pdf"');
+						response.setHeader('Content-type', 'application/pdf');
+						response.send(result.rows[0].instructions);
+					}
 				}
 		});
     });
@@ -421,30 +447,3 @@ app.get('/*', function (request, response) {
 app.listen(app.get('port'), function() {
 	console.log('Node app is running on port', app.get('port'));
 });
-
-//Selenium function testing
-// var selenium = require('selenium-webdriver');
-//    By = selenium.By,
-//   until = selenium.until;
-// var chai = require('chai');
-// chai.use = require('chai-as-promised');
-// var expect = chai.expect;
-
-// //System.setProperty("webdriver.chrome.driver","./chromedriver");
-
-// //var driver = new ChromeDriver();
-// //
-// var driver = new selenium.Builder()
-//   .forBrowser('chrome')
-// .build();
-
-// driver.get('localhost:5000');
-
-//     // expect(driver.getTitle()).to.eventually.contain
-//     //     'Dreamjoob Deliverer'
-// //driver.findElement(By.name('q')).sendKeys('webdriver');
-// //driver.click("create-new-test");
-// driver.findElement(By.id('create-new-test')).click();
-// driver.findElement(By.id('cancel')).click();
-// //driver.wait(until.titleIs('webdriver - Google Search'), 1000);
-// //driver.quit();
