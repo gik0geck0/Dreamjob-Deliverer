@@ -86,11 +86,9 @@ test.get('/*', function(request, response) {
 					response.redirect(testURL);
 				}
 				else {
-                var test_path = "public/pdfFiles/" + test_url.substr(250) + ".pdf"
-                var instr_str = inst[0].instructions.toString("base64");
-                    test_path = ".." + test_path.substr(6);
-                    //console.log(test_path);
-					response.render('pages/test', {test_instance: inst[0], test_path: test_path, instr_data: instr_str});
+                    //to pass pdf information and use it in JavaScript we must first convert it to a string
+                    var instr_str = inst[0].instructions.toString("base64");
+					response.render('pages/test', {test_instance: inst[0], instr_data: instr_str});
 				}
 			}
 		});
@@ -98,7 +96,47 @@ test.get('/*', function(request, response) {
 });
 
 //test page post method
-//TODO
+test.post('/*', upload.single('select_file'), function(request, response, next){
+    var test_data = '\\x';
+	var test_url = request.url.substring(1);
+    var test_filename = request.file.originalname;
+    
+    //time to read the file
+    fs.readFile(request.file.path, 'hex', function (err,data) {
+        if (err) {
+            return console.error(err);
+        }
+        //grab the data
+        test_data = test_data + data;
+        //query the database to insert the new test 
+        pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+			if (err) {
+				return console.error(err);
+			}
+            client.query('UPDATE test_instances SET latest_submission = $1, submission_filename = $2 WHERE url = $3',
+				[test_data, test_filename, test_url],
+				function(err, result) {
+					done();
+					if (err) {
+						console.error(err);
+						error_message = err;
+						success = false;
+						// success_title = test_name;
+						response.redirect('#');
+					}
+					else { 
+                        console.log('removing file from uploads');
+						//first unlink/remove the file we added to uploads/
+						fs.unlink(request.file.path);
+						//then redirect back to the test page
+						success = true;
+						response.redirect('#');
+					}
+			});
+        });
+    });
+
+});
 
 //admin page get method
 admin.get('/', function(request, response) {
