@@ -12,7 +12,7 @@ before ->
     .forBrowser('firefox')
     .build()
   @driver.getWindowHandle()
-  @driverwait = new WebDriverWait(@driver, timeout)
+
 
 #closes the window after testing has finished
 after ->
@@ -63,18 +63,3 @@ describe 'Dreamjob Deliverer Tests', ->
   it 'finds and gets routed to a schedule button on the page', ->
     @driver.findElement(xpath: '//div[@id="test-list"]/a[1]/button').click()
     expect(@driver.getCurrentUrl()).to.eventually.contain 'http://localhost:5000/app/admin/schedule'
-
-#checking if a test will be displayed somewhere on the page after creating it
-  it 'displays a test after it has been created', ->
-    @driver.findElement(id: 'create-new-test').click()
-    titleInput = @driver.findElement(id: 'title')
-    titleInput.sendKeys('Testing123')
-    fileInput = @driver.findElement(id: 'file_name')
-    fileInput.sendKeys('DiscreteMathHW8.pdf')
-    @driver.findElement(id: 'submit').click().then(
-      @driver.sleep(5000)
-    )
-    @driverwait.until(@driver.findElement(id: 'alert-success'))
-    expect(@driver.getCurrentUrl()).to.eventually.equal 'http://localhost:5000/app/admin/'
-  # text = @driver.findElement(id: 'alert-success').getText()
-  # expect(text).to.eventually.equal 'Testing123 has been successfully created.'
