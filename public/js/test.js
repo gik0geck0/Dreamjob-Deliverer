@@ -92,35 +92,32 @@ function initializeClock(id, endtime){
 		if (t.hours > 0) remaining += t.hours + 'h ';
 		remaining += t.minutes + 'm ' + t.seconds + 's ';
 		if (t.total <= 0) {
-			remaining = 'Ended';
-			$('#time_button').addClass('btn-danger').removeClass('btn-warning');
+			window.location.href = testURL;
+			// remaining = 'Ended';
+			// $('#time_button').addClass('btn-danger').removeClass('btn-warning');
 		}
 		clock.innerHTML = remaining;
-		if(t.total<=0){
-			clearInterval(timeinterval);
-		}
+		// if(t.total <= 0){
+			// clearInterval(timeinterval);
+		// }
 	},1000);
 }
 /* End time remaining stuff */
 
 $(function() {
-	var fileUploadText = 'Select an instructions file to upload';
-
 	//File selection input
 	$('#file_name').click(function() {
 		$('#select_file').click();
 	});
 	$('#select_file').change(function() {
-		var filename = $('#select_file').val().split('\\').pop().split('/').pop() || fileUploadText;
+		var filename = $('#select_file').val().split('\\').pop().split('/').pop();
 		$('#file_name').val(filename);
 	});
 	$('#file_name').keydown(function(e){
 		if (e.which != 13 && e.which != 9)
-		e.preventDefault();
+			e.preventDefault();
 	});
 	
 	//Start the timer until end time
 	initializeClock('time_remaining', end_time);
-	
-	//TODO: check for file on submission
 });
