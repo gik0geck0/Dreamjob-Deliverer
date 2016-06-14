@@ -5,10 +5,11 @@
 }
 
 .scrolling-list {
-	overflow-y:scroll;
+	overflow-y: scroll;
+	padding: 0;
 }
 
-.glyph-td {
+.glyph-cell {
 	text-align: center;
 	vertical-align: middle;
 }
@@ -17,12 +18,16 @@
 	font-size: 16pt;
 }
 
-.one-line {
+.one-line-scroll {
 	overflow-x: auto;
 	white-space: nowrap;
 }
 
-.one-line a {
+.one-line {
+	white-space: nowrap;
+}
+
+.one-line-scroll a {
 	position: absolute;
 	right: 1.5em;
 }
@@ -32,7 +37,7 @@
 	white-space: nowrap;
 }
 
-h4 {
+.word-break {
 	word-wrap: break-word;
 }
 

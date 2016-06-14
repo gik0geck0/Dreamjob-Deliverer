@@ -3,7 +3,7 @@ function loadTest(testtitle, testdescription) {
     $('#test-list').append(
 		"<a id='view-" + testtitle + "' class='list-group-item'>\
 			<button class='btn pull-right' id='schedule-" + testtitle + "'>schedule</button>\
-			<h4>" + testtitle + "<br/>\
+			<h4 class='word-break'>" + testtitle + "<br/>\
 			<small>" + testdescription + "</small></h4>\
 		</a>"
 	);
@@ -29,44 +29,47 @@ function addInstance(candidate, email, title, start, end, uri) {
 	
 	//HTML for tests in tabs
 	var baseHTML = 
-		"<tr>\
-			<td><p>" + candidate + email + "</p></td>\
-			<td>" + title + "</td>\
-			<td>" + startformatted + "</td>\
-			<td>" + endformatted + "</td>\
-			<td class='glyph-td' title='Test URL'>\
-				<a href='#' data-toggle='popover' data-placement='auto right' title='Click to copy URL' data-content='" + hostURL + testURL + uri + "'>\
-					<span class='glyph glyphicon glyphicon-link'></span>\
-				</a>\
-			</td>\
-			<td class='glyph-td' title='Reschedule test times'>\
-				<a href='" + rescheduleURL + uri + "'>\
-					<span class='glyph glyphicon glyphicon-calendar'></span>\
-				</a>\
-			</td>";
+		"<li class='list-group-item'>\
+			<div class='row'>\
+				<div class='col-sm-4 one-line-scroll'>" + candidate + email + "</div>\
+				<div class='col-sm-2 one-line-scroll'>" + title + "</div>\
+				<div class='col-sm-2 one-line'>" + startformatted + "</div>\
+				<div class='col-sm-2 one-line'>" + endformatted + "</div>\
+				<div class='col-sm-1 glyph-cell' title='Test URL'>\
+					<a href='#' data-toggle='popover' data-placement='auto right' title='Click to copy URL' data-content='" + hostURL + testURL + uri + "'>\
+						<span class='glyph glyphicon glyphicon-link'></span>\
+					</a>\
+				</div>";
+			
+	var rescheduleHTML = 
+		"<div class='col-sm-1 glyph-cell' title='Reschedule test times'>\
+			<a href='" + rescheduleURL + uri + "'>\
+				<span class='glyph glyphicon glyphicon-calendar'></span>\
+			</a>\
+		</div>";
 			
 	var downloadHTML = 
-		"<td class='glyph-td' title='Download test submission'>\
+		"<div class='col-sm-1 glyph-cell' title='Download test submission'>\
 			<a href='" + downloadURL + uri + "'>\
 				<span class='glyph glyphicon glyphicon-save'></span>\
 			</a>\
-		</td>";
+		</div>";
 		
-	var endHTML = "</tr>";
+	var endHTML = "</div></li>";
 	
 	//Add scheduled test
 	if (start > today) {
-		$('#scheduled-tbody').append(baseHTML + endHTML);
+		$('#scheduled-tests').append(baseHTML + rescheduleHTML + endHTML);
 	}
 	
 	//Add in-progress test
 	if (start < today && end > today) {
-		$('#in-progress-tbody').append(baseHTML + endHTML);
+		$('#in-progress-tests').append(baseHTML + rescheduleHTML + endHTML);
 	}
 	
 	//Add finished test
 	if (end < today) {
-		$('#finished-tbody').append(baseHTML + downloadHTML + endHTML);
+		$('#finished-tests').append(baseHTML + downloadHTML + endHTML);
 	}
 }
 
@@ -82,7 +85,8 @@ function closePopovers() {
 	});
 }
 
-$(function(){
+$(function() {
+	/** Button and a redirects **/
 	//Redirect to /view or /schedule for the test clicked
 	var gotoview = true;
 	$('#test-list a > button').click(function() {
@@ -95,17 +99,18 @@ $(function(){
 	});
 	
 	//Redirect to /create
-    $('#create-new-test').click(function(){
+    $('#create-new-test').click(function() {
         window.location.href = createURL;
     });
 	
+	/** Alert success/fail stuff **/
 	//Close fail alert
-	$('#alert-fail').on('closed.bs.alert', function(){
+	$('#alert-fail').on('closed.bs.alert', function() {
 		$(window).trigger('resize');
 	});
 	
 	//Close success alert
-	$('#alert-success').on('closed.bs.alert', function(){
+	$('#alert-success').on('closed.bs.alert', function() {
 		$(window).trigger('resize');
 	});
 	
@@ -127,9 +132,11 @@ $(function(){
 		}
 	});
 	
+	/** Test instance stuff **/
 	//Set up schedule/in-progress/finished tabs
 	$('#tabs').tab();
 	
+	/** Popover stuff **/
 	//Give a popover to hyperlink icon in scheduled/in-progress/finished tabs
 	$('[data-toggle="popover"]').popover().prop('title', 'Test URL');
 	

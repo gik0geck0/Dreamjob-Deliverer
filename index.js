@@ -39,7 +39,7 @@ var createURL = '/app/admin/create/';
 var scheduleURL = '/app/admin/schedule/';
 var rescheduleURL = '/app/admin/reschedule/';
 var viewURL = '/app/admin/view/';
-var downloadURL = '/app/admin/download/'
+var downloadURL = '/app/admin/download/';
 
 //set where files are
 app.use(express.static(__dirname + '/public'));
@@ -104,7 +104,7 @@ test.get('/*', function(request, response) {
 });
 
 //test page post method
-test.post('/*', upload.single('select_file'), function(request, response, next){
+test.post('/*', upload.single('select_file'), function(request, response, next) {
     var test_data = '\\x';
 	var test_url = request.url.substring(1);
     var test_filename = request.file.originalname;
@@ -121,7 +121,8 @@ test.post('/*', upload.single('select_file'), function(request, response, next){
 			if (err) {
 				return console.error(err);
 			}
-            client.query('UPDATE test_instances SET latest_submission = $1, submission_filename = $2 WHERE url = $3',
+			//Don't allow test submission after test has ended
+            client.query('UPDATE test_instances SET latest_submission = $1, submission_filename = $2 WHERE url = $3 AND end_time > now()',
 				[test_data, test_filename, test_url],
 				function(err, result) {
 					done();
@@ -144,7 +145,6 @@ test.post('/*', upload.single('select_file'), function(request, response, next){
 			});
         });
     });
-
 });
 
 //admin page get method
@@ -340,7 +340,14 @@ admin.get('/reschedule/*', function(request, response) {
 					response.redirect(adminURL);
 				}
 				else {
-					response.render('pages/reschedule', {test_instance: inst[0]});
+					if (new Date(inst[0].end_time) < new Date()) {
+						error_message = 'Error. That test has ended and connot be rescheduled.';
+						success = false;
+						response.redirect(adminURL);
+					}
+					else {
+						response.render('pages/reschedule', {test_instance: inst[0]});
+					}
 				}
 			}
 		});

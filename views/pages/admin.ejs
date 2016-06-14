@@ -14,7 +14,23 @@
 				<% }); %>
                 loadTest('<%= item.title %>', desc);
             <% }); %>
-		
+			
+			<!-- Load test instance tab headers -->
+			var headerHTML = 
+				"<li class='list-group-item list-group-item-info'>\
+					<div class='row'>\
+						<div class='col-sm-4'>Name (Email)</div>\
+						<div class='col-sm-2'>Test Title</div>\
+						<div class='col-sm-2'>Start Time</div>\
+						<div class='col-sm-2'>End Time</div>\
+						<div class='col-sm-1'></div>\
+						<div class='col-sm-1'></div>\
+					</div>\
+				</li>";
+			$('#scheduled-tests').append(headerHTML);
+			$('#in-progress-tests').append(headerHTML);
+			$('#finished-tests').append(headerHTML);
+			
 			<!-- Load all of the test instances -->
             <% test_instances_array.forEach(function(item) { %>
                 addInstance('<%= item.name %>', '<%= item.email %>', '<%= item.test_title %>', '<%= item.start_time %>', '<%= item.end_time %>', '<%= item.url %>');
@@ -24,7 +40,7 @@
 			$('#success-fail').html(
 				<% if (success != null) {
 					if (success) { %>
-						"<div id='alert-success' class='one-line alert alert-success fade in'>" + 
+						"<div id='alert-success' class='one-line-scroll alert alert-success fade in'>" + 
 							"<a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>" + 
 							"<strong>Success!</strong> <%= success_title %> has been successfully " + 
 							<% if (success_url != null) { %>
@@ -38,7 +54,7 @@
 						"</div>"
 					<% }
 					else { %>
-						"<div id='alert-fail' class='one-line alert alert-danger fade in'>" + 
+						"<div id='alert-fail' class='one-line-scroll alert alert-danger fade in'>" + 
 							"<a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>" + 
 							"<strong>Fail!</strong><br/>" + 
 							<% if (error_message != null) { %>
@@ -97,59 +113,25 @@
 		
 		<div class='col-sm-12 col-md-8'>
 			<ul id='tabs' class='nav nav-tabs'>
-				<li class='active'><a data-toggle='tab' href='#scheduled-tests'>Scheduled</a></li>
-				<li><a data-toggle='tab' href='#in-progress-tests'>In-Progress</a></li>
-				<li><a data-toggle='tab' href='#finished-tests'>Finished</a></li>
+				<li class='active'><a data-toggle='tab' href='#scheduled-tab'>Scheduled</a></li>
+				<li><a data-toggle='tab' href='#in-progress-tab'>In-Progress</a></li>
+				<li><a data-toggle='tab' href='#finished-tab'>Finished</a></li>
 			</ul>
 			<div class='tab-content'>
-				<div id='scheduled-tests' class='scrolling-list tab-pane fade in active'>
-					<table class='table table-hover table-border'>
-						<thead>
-							<tr>
-								<th>Name (Email)</th>
-								<th>Test</th>
-								<th>Start Time</th>
-								<th>End Time</th>
-								<th></th>
-								<th></th>
-							</tr>
-						</thead>
-						<tbody id='scheduled-tbody'>
-						</tbody>
-					</table>
+				<div id='scheduled-tab' class='tab-pane fade in active'>
+					<ul id='scheduled-tests' class='list-group scrolling-list'>
+						<!-- scheduled tests here -->
+					</ul>
 				</div>
-				<div id='in-progress-tests' class='scrolling-list tab-pane fade'>
-					<table class='table table-hover table-border'>
-						<thead>
-							<tr>
-								<th>Name (Email)</th>
-								<th>Test</th>
-								<th>Start Time</th>
-								<th>End Time</th>
-								<th></th>
-								<th></th>
-							</tr>
-						</thead>
-						<tbody id='in-progress-tbody'>
-						</tbody>
-					</table>
+				<div id='in-progress-tab' class='tab-pane fade'>
+					<ul id='in-progress-tests' class='scrolling-list'>
+						<!-- in-progress tests here -->
+					</ul>
 				</div>
-				<div id='finished-tests' class='scrolling-list tab-pane fade'>
-					<table class='table table-hover table-border'>
-						<thead>
-							<tr>
-								<th>Name (Email)</th>
-								<th>Test</th>
-								<th>Start Time</th>
-								<th>End Time</th>
-								<th></th>
-								<th></th>
-								<th></th>
-							</tr>
-						</thead>
-						<tbody id='finished-tbody'>
-						</tbody>
-					</table>
+				<div id='finished-tab' class='tab-pane fade'>
+					<ul id='finished-tests' class='scrolling-list'>
+						<!-- finished tests here -->
+					</ul>
 				</div>
 			</div>
 		</div>

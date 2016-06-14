@@ -59,7 +59,7 @@ function handlePages(page) {
 /* End PDF stuff */
 
 /* Start time remaining stuff */
-function getTimeRemaining(endtime){
+function getTimeRemaining(endtime) {
 	var t = Date.parse(endtime) - Date.parse(new Date());
 	if (t <= 0) {
 		return {
@@ -83,7 +83,7 @@ function getTimeRemaining(endtime){
 	};
 }
 
-function initializeClock(id, endtime){
+function initializeClock(id, endtime) {
 	var clock = document.getElementById(id);
 	var timeinterval = setInterval(function() {
 		var t = getTimeRemaining(endtime);
@@ -97,7 +97,7 @@ function initializeClock(id, endtime){
 			// $('#time_button').addClass('btn-danger').removeClass('btn-warning');
 		}
 		clock.innerHTML = remaining;
-		// if(t.total <= 0){
+		// if(t.total <= 0) {
 			// clearInterval(timeinterval);
 		// }
 	},1000);
@@ -113,7 +113,7 @@ $(function() {
 		var filename = $('#select_file').val().split('\\').pop().split('/').pop();
 		$('#file_name').val(filename);
 	});
-	$('#file_name').keydown(function(e){
+	$('#file_name').keydown(function(e) {
 		if (e.which != 13 && e.which != 9)
 			e.preventDefault();
 	});
