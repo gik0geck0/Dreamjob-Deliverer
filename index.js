@@ -10,16 +10,14 @@ var fs = require('fs');
 //for postgresql
 var pg = require('pg');
 
-//for html escaping
-var escape = require('escape-html');
-
 //for unique url extensions
 var crypto = require('crypto');
 
 //for reporting success and failure
 var success = null;
 var success_title = null;
-var schedule_url = null;
+var success_url = null;
+var success_filename = null;
 var error_message = null;
 
 //set up support for handling post requests
@@ -70,6 +68,15 @@ test.get('/*', function(request, response) {
 	//test_url is everything after last /
 	var test_url = request.url.substring(1);
 	
+	var current_success = success;
+	success = null;
+	
+	var current_success_filename = success_filename;
+	success_filename = null;
+	
+	var current_error_message = error_message;
+	error_message = null;
+	
 	pg.connect(process.env.DATABASE_URL, function(err, client, done) {
 		if (err) {
 			return console.error(err);
@@ -89,7 +96,7 @@ test.get('/*', function(request, response) {
 				else {
                     //to pass pdf information and use it in JavaScript we must first convert it to a string
                     var instr_str = inst[0].instructions.toString("base64");
-					response.render('pages/test', {test_instance: inst[0], instr_data: instr_str});
+					response.render('pages/test', {test_instance: inst[0], instr_data: instr_str, success: current_success, success_filename: current_success_filename, error_message, current_error_message});
 				}
 			}
 		});
@@ -131,6 +138,7 @@ test.post('/*', upload.single('select_file'), function(request, response, next){
 						fs.unlink(request.file.path);
 						//then redirect back to the test page
 						success = true;
+						success_filename = test_filename;
 						response.redirect('#');
 					}
 			});
@@ -158,15 +166,14 @@ admin.get('/', function(request, response) {
 		var current_success_title = success_title;
 		success_title = null;
 		
-		var current_schedule_url = schedule_url;
-		schedule_url = null;
+		var current_success_url = success_url;
+		success_url = null;
 		
-		//don't escape here bacause I don't want /reschedule error to be escaped
 		var current_error_message = error_message;
 		error_message = null;
 		
 		//TODO: look into async.js module for this crap
-		response.render('pages/admin', {test_array: test_array, test_instances_array: test_instances_array, success: current_success, success_title: current_success_title, schedule_url: current_schedule_url, error_message: current_error_message});
+		response.render('pages/admin', {test_array: test_array, test_instances_array: test_instances_array, success: current_success, success_title: current_success_title, success_url: current_success_url, error_message: current_error_message});
 	}
     
     //Query the tables so we can show admins the data
@@ -299,7 +306,7 @@ admin.post('/schedule', function(request, response, next) {
 					//then redirect back to the admin page
 					success = true;
 					success_title = test_name;
-					schedule_url = request.headers.origin + testURL + test_url;
+					success_url = request.headers.origin + testURL + test_url;
 					response.redirect(adminURL);
 				}
 		});
@@ -369,7 +376,7 @@ admin.post('/reschedule/*', function(request, response, next) {
 					//then redirect back to the admin page
 					success = true;
 					success_title = test_name;
-					schedule_url = request.headers.origin + testURL + test_url;
+					success_url = request.headers.origin + testURL + test_url;
 					response.redirect(adminURL);
 				}
 		});

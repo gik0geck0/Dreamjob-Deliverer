@@ -27,11 +27,10 @@
 						"<div id='alert-success' class='one-line alert alert-success fade in'>" + 
 							"<a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>" + 
 							"<strong>Success!</strong> <%= success_title %> has been successfully " + 
-							<% if (schedule_url != null) { %>
+							<% if (success_url != null) { %>
 								"scheduled.<br/>" + 
 								"This url will allow someone to take the test. Click here to copy it.<br/>" + 
-								"<span id='url-text'><%= schedule_url %></span>" + 
-								"<input id='url-copy' type='hidden' />" + 
+								"<span id='url-text'><%= success_url %></span>" + 
 							<% }
 							else { %>
 								"created." + 
@@ -39,7 +38,7 @@
 						"</div>"
 					<% }
 					else { %>
-						"<div id='alert-fail' class='one-line alert alert-danger fade in' style='overflow-x: scroll;'>" + 
+						"<div id='alert-fail' class='one-line alert alert-danger fade in'>" + 
 							"<a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>" + 
 							"<strong>Fail!</strong><br/>" + 
 							<% if (error_message != null) { %>

@@ -8,10 +8,9 @@
 	<script type='text/javascript' src='/js/build/pdf.worker.js'></script>
     
     <!-- We must load give PDF.js the bytea data of the pdf from the database -->
-    <script>        
+	<script type='text/javascript'>
         //This variable and function convert the pdf data from index.js into a usable binary that PDF.js uses
         var BASE64_MARKER = ';base64,';
-        
         function convertDataURIToBinary(dataURI) {
             var base64Index = dataURI.indexOf(BASE64_MARKER) + BASE64_MARKER.length;
             var base64 = dataURI.substring(base64Index);
@@ -29,13 +28,36 @@
         //test.js uses pdfAsArray to load the array
         var pdfAsDataUri = "data:application/pdf;base64," + '<%= instr_data %>';
         var pdfAsArray = convertDataURIToBinary(pdfAsDataUri);
-    </script>
-    
-    
-    
-	
-	<script type='text/javascript'>
+		
+		//Get the end time for time remaining
 		var end_time = '<%= test_instance.end_time %>';
+		
+		$(function() {
+			<!-- Display whether the database was successfully updated or not -->
+			$('#success-fail').html(
+				<% if (success != null) {
+					if (success) { %>
+						"<div id='alert-success' class='one-line alert alert-success fade in'>" + 
+							"<a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>" + 
+							"<strong>Success!</strong> <%= success_filename %> has been successfully uploaded." + 
+						"</div>"
+					<% }
+					else { %>
+						"<div id='alert-fail' class='one-line alert alert-danger fade in'>" + 
+							"<a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>" + 
+							"<strong>Fail!</strong><br/>" + 
+							<% if (error_message != null) { %>
+								"<%= error_message -%><br/>" + 
+								"Please try again." + 
+							<% }
+							else { %>
+								"No error message available, please try again." + 
+							<% } %>
+						"</div>"
+					<% }
+				} %>
+			);
+		});
 	</script>
 	
 	<!-- Test page script -->
@@ -45,7 +67,17 @@
 <body oncontextmenu='return false;'>
 
 <div class='container-fluid'>
-	<h2 style='text-align:center; padding:10px;'><%= test_instance.test_title %></h2>
+	<div class='row'>
+		<div class='col-md-2'></div>
+		
+		<div class='col-sm-12 col-md-8'>
+			<h2 style='text-align:center; padding:10px;'><%= test_instance.test_title %></h2>
+			
+			<div id='success-fail'></div>
+		</div>
+		
+		<div class='col-md-2'></div>
+	</div>
 	
 	<div class='row' style='min-height:64px'>
 		<div class='col-md-2'></div>
@@ -57,10 +89,10 @@
 					<label class='input-group-btn'>
 						<span class='btn btn-default'>
 							Browse
-							<input class='form-control-static' type='file' accept='*' id='select_file' name='select_file' style='display:none' required />
+							<input class='form-control-static' type='file' id='select_file' name='select_file' style='display:none' />
 						</span>
 					</label>
-					<input class='form-control' type='text' id='file_name' value='Select a file to upload' readonly />
+					<input class='form-control' type='text' name='file_name' id='file_name' placeholder='Select an instructions file to upload' required />
 					
 					<span class='input-group-btn'>
 						<button class='btn btn-primary' type='submit'>Submit</button>
@@ -92,7 +124,7 @@
 			</div>
 			<div class='alert alert-danger fade in' hidden>
 				<a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
-				<strong>Fail!</strong> Select a file before submitting.
+				<strong>Fail!</strong> Select a file and try again.
 			</div>
 		</div>
 		

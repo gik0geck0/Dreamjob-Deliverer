@@ -16,7 +16,6 @@
     "chai-as-promised": "^4.3.0",
     "chromedriver": "^2.21.2",
     "ejs": "2.4.1",
-    "escape-html": "^1.0.3",
     "express": "4.13.3",
     "mocha": "^2.0.1",
     "multer": "^1.1.0",

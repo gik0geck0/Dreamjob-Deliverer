@@ -1,5 +1,3 @@
-var fileUploadText = 'Select an instructions file to upload';
-
 $(function() {
 	//File selection input
 	$('#file_name').click(function() {
@@ -11,6 +9,6 @@ $(function() {
 	});
 	$('#file_name').keydown(function(e){
 		if (e.which != 13 && e.which != 9)
-		e.preventDefault();
+			e.preventDefault();
 	});
 });
