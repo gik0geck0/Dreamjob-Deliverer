@@ -70,6 +70,18 @@ function addInstance(candidate, email, title, start, end, uri) {
 	}
 }
 
+//Close all open popovers
+function closePopovers() {
+	//Clcik all the popovers that are open
+	$('[data-original-title]').each(function () {
+		if ($(this).next().hasClass('popover')) {
+			//$(this).popover('hide'); has a bug that makes the popover 
+			//stay hidden until it is clicked again twice instead of once
+			$(this).click();
+		}
+	});
+}
+
 $(function(){
 	//Redirect to /view or /schedule for the test clicked
 	var gotoview = true;
@@ -137,6 +149,14 @@ $(function(){
 			console.log('URL copy was ' + msg);
 		} catch (err) {
 			console.error('Unable to copy URL');
+		}
+	});
+	
+	//Close popovers when clicked away from them
+	$(document).on('click', function(e) {
+		//Check parents and self for .popover and [data-original-title]
+		if ($(e.target).closest('.popover').length == 0 && $(e.target).closest('[data-original-title]').length == 0) {
+			closePopovers();
 		}
 	});
 	
