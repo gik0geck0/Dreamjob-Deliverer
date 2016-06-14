@@ -272,11 +272,17 @@ admin.post('/schedule', function(request, response, next) {
     var end_time = request.body.endtime;
     var test_name = request.body.testtitle;
     
+    /** pull the following into a function **/
     //Using crypto for the url should always result in a unique base64 string
 	//190 bytes results in 256 char string
 	//TODO: make sure this is not already in db just in case
-    var test_url = crypto.pseudoRandomBytes(190).toString('base64')
-		.replace(/\//g,'_').replace(/\+/g,'-');
+    //var test_url = crypto.pseudoRandomBytes(190).toString('base64')
+	//	.replace(/\//g,'_').replace(/\+/g,'-');
+    var test_url = "banana";
+    var recursion_limit = 5;
+    
+        
+
     
     pg.connect(process.env.DATABASE_URL, function(err, client, done) {
 		if (err) {
@@ -291,6 +297,8 @@ admin.post('/schedule', function(request, response, next) {
 					error_message = err;
 					success = false;
 					// success_title = test_name;
+                    /**recursively call the function of fail 
+                            actually fail after a set number of times? **/
 					response.redirect(adminURL);
 				}
 				else {
