@@ -275,42 +275,19 @@ admin.get('/schedule', function(request, response) {
 
 //schedule page post method
 admin.post('/schedule', function(request, response, next) {
+    //get all of the form values
     var candidate_name = request.body.candidatename == '' ? null : request.body.candidatename;
     var candidate_email = request.body.candidateemail == '' ? null : request.body.candidateemail;
     var start_time = request.body.starttime;
     var end_time = request.body.endtime;
     var test_name = request.body.testtitle;
     
-    //Using crypto for the url should always result in a unique base64 string
-	//190 bytes results in 256 char string
-	//TODO: make sure this is not already in db just in case
-    var test_url = crypto.pseudoRandomBytes(190).toString('base64')
-		.replace(/\//g,'_').replace(/\+/g,'-');
+    //set the recursive limit and set the success_url it redirects to
+    var recursion_limit = 5;
+    success_url = request.headers.origin + testURL;
+    //call to the function preforming the query
+    scheduleSubmission(response, candidate_name, candidate_email, start_time, end_time, test_name, recursion_limit);
     
-    pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-		if (err) {
-			return console.error(err);
-		}
-        client.query('INSERT INTO test_instances (name, email, test_title, start_time, end_time, url) VALUES ($1, $2, $3, $4, $5, $6)',
-			[candidate_name, candidate_email, test_name, start_time, end_time, test_url],
-			function(err, result) {
-				done();
-				if (err) {
-					console.error(err);
-					error_message = err;
-					success = false;
-					// success_title = test_name;
-					response.redirect(adminURL);
-				}
-				else {
-					//then redirect back to the admin page
-					success = true;
-					success_title = test_name;
-					success_url = request.headers.origin + testURL + test_url;
-					response.redirect(adminURL);
-				}
-		});
-    });
 });
 
 //reschedule page get method
@@ -470,3 +447,54 @@ app.get('/*', function (request, response) {
 app.listen(app.get('port'), function() {
 	console.log('Node app is running on port', app.get('port'));
 });
+
+
+/*
+    Functions used in GET and POST methods above
+*/
+
+//This function tries to create a unique url then inserts a new scheduled test instance into our database
+//If it fails to create a unique url it recursively calls its self again. Doing so inside the query ensures async execution
+//There is a limit variable in case the query fails for a different reason and gets stuck recursively calling itself
+function scheduleSubmission(response, candidate_name, candidate_email, start_time, end_time, test_name, recursion_limit)
+{
+    //Using crypto for the url should always result in a unique base64 string
+	//190 bytes results in 256 char string
+    var test_url = crypto.pseudoRandomBytes(190).toString('base64')
+		.replace(/\//g,'_').replace(/\+/g,'-');
+
+    
+    pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+		if (err) {
+			return console.error(err);
+		}
+        client.query('INSERT INTO test_instances (name, email, test_title, start_time, end_time, url) VALUES ($1, $2, $3, $4, $5, $6)',
+			[candidate_name, candidate_email, test_name, start_time, end_time, test_url],
+			function(err, result) {
+				done();
+				if (err) {
+					console.error(err);
+					error_message = err;
+					success = false;
+                    
+                    //If we have not hit the recursion limit, and we failed, try again. Otherwise, send response
+                    if(recursion_limit < 1)
+                    {
+                    	response.redirect(adminURL);
+                    }
+                    else
+                    {   
+                        // reduce the recursion limit!
+                        scheduleSubmission(candidate_name, candidate_email, start_time, end_time, test_name, recursion_limit - 1); 
+                    }
+				}
+				else {
+					//then redirect back to the admin page
+					success = true;
+					success_title = test_name;
+                    success_url = success_url + test_url;
+                    response.redirect(adminURL);
+				}
+		});
+    });
+}
