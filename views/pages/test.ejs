@@ -73,7 +73,9 @@
 		<div class='col-sm-12 col-md-8'>
 			<h2 style='text-align:center; padding:10px;'><%= test_instance.test_title %></h2>
 			
-			<div id='success-fail'></div>
+			<div id='success-fail'>
+				<!-- Success or fail alert appears here -->
+			</div>
 		</div>
 		
 		<div class='col-md-2'></div>
@@ -108,24 +110,6 @@
 			</div>
 			<div id='time_remaining' class='collapse input-lg inline pull-right'></div>
 			<div style='clear:both'></div>
-		</div>
-		
-		<div class='col-md-2'></div>
-	</div>
-	
-	<div class='row'>
-		<div class='col-md-2'></div>
-		
-		<div class='col-sm-12 col-md-8'>
-			<!-- Upload success -->
-			<div class='alert alert-success fade in' hidden>
-				<a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
-				<strong>Success!</strong> The file &lt;&lt;filename here&gt;&gt; uploaded successfully.<br/>You can always submit again if necessary.
-			</div>
-			<div class='alert alert-danger fade in' hidden>
-				<a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
-				<strong>Fail!</strong> Select a file and try again.
-			</div>
 		</div>
 		
 		<div class='col-md-2'></div>

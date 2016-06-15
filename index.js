@@ -14,6 +14,8 @@ var pg = require('pg');
 var crypto = require('crypto');
 
 //for reporting success and failure
+//These are checked by pages that are redirected to after a post method is processed
+//If it is successful or not, based on what was attempted, different info will be needed by the page
 var success = null;
 var success_title = null;
 var success_url = null;
@@ -156,6 +158,7 @@ admin.get('/', function(request, response) {
     //add a flag to check if the first query finished
     //since this is viewed in two queries, there is a chance of having a race condition
     //the race condition should result in the page never loading
+	//TODO: if this is still a concern, look into the async.js module time permitting
     var first_query_complete = false;
 	
 	//call to render admin when called below
@@ -172,7 +175,6 @@ admin.get('/', function(request, response) {
 		var current_error_message = error_message;
 		error_message = null;
 		
-		//TODO: look into async.js module for this crap
 		response.render('pages/admin', {test_array: test_array, test_instances_array: test_instances_array, success: current_success, success_title: current_success_title, success_url: current_success_url, error_message: current_error_message});
 	}
     

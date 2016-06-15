@@ -36,7 +36,7 @@ function addInstance(candidate, email, title, start, end, uri) {
 				<div class='col-sm-2 one-line'>" + startformatted + "</div>\
 				<div class='col-sm-2 one-line'>" + endformatted + "</div>\
 				<div class='col-sm-1 glyph-cell' title='Test URL'>\
-					<a href='#' data-toggle='popover' data-placement='auto right' title='Click to copy URL' data-content='" + hostURL + testURL + uri + "'>\
+					<a href='#' data-toggle='popover' data-placement='auto left' title='Click to copy URL' data-content='" + hostURL + testURL + uri + "'>\
 						<span class='glyph glyphicon glyphicon-link'></span>\
 					</a>\
 				</div>";
@@ -174,6 +174,6 @@ $(function() {
 //Format test tables so that they stay on one page
 $(window).on('resize', function() {
 	$('.scrolling-list').each(function(i, obj) {
-		$(obj).css('max-height', ($(window).height()-$('#top-row').height()-75)/2);
+		$(obj).css('height', ($(window).height()-$('#top-row').height()-75)/2);
 	});
 });

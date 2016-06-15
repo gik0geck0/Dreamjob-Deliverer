@@ -1,8 +1,7 @@
 /* Site wide js file */
 
 //URL paths for links
-console.log(window.location.port);
-var url_port = window.location.port == '80' || window.location.port == '8080' ? '' : ':' + window.location.port;
+var url_port = window.location.port == '80' || window.location.port == '8080' || window.location.port == '' ? '' : ':' + window.location.port;
 var hostURL = window.location.protocol + '//' + window.location.hostname + url_port;
 var testURL = '/app/test/';
 var adminURL = '/app/admin/'

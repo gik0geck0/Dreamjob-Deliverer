@@ -1,13 +1,15 @@
-/* Start PDF stuff */
+/** Start PDF stuff **/
 var currPage = 1;
 var numPages = 0;
 var thePDF = null;
+//TODO: set pdfScale based on screen size?
+//This should never be an issue because the pdf zooms with the page if the user zooms in/out (e.g. CTRL +/-)
 var pdfScale = 1;
 
 PDFJS.disableStream = true;
 
+//Begin processing the pdf
 $(window).on('load', function() {
-	//TODO: set pdfScale based on screen size?
 
     //Load the pdfAsArray from the ejs
 	PDFJS.getDocument(pdfAsArray).then(function(pdf) {
@@ -19,6 +21,7 @@ $(window).on('load', function() {
 	});
 });
 
+//Set up for processing the pdf
 if (!window.requestAnimationFrame) {
 	window.requestAnimationFrame = (function() {
 		return window.webkitRequestAnimationFrame ||
@@ -31,6 +34,7 @@ if (!window.requestAnimationFrame) {
 	})();
 }
 
+//Function for creating a canvas with one pdf page on it
 function handlePages(page) {
 	var viewport = page.getViewport(pdfScale);
 
@@ -44,21 +48,22 @@ function handlePages(page) {
 		viewport: viewport
 	};
 	
-	//Draw it on the canvas
+	//Draw the pdf on the canvas
 	page.render(renderContext);
 	
-	//Add it to the web page
+	//Add the canvas to the web page
 	document.getElementById('pdf_div').appendChild(canvas);
 	
-	//Move to next page
+	//Move to next page while there are more pages to display
 	currPage++;
 	if (thePDF != null && currPage <= numPages) {
 		thePDF.getPage(currPage).then(handlePages);
 	}
 }
-/* End PDF stuff */
+/** End PDF stuff **/
 
-/* Start time remaining stuff */
+/** Start time remaining stuff **/
+//Get the time remaining in human readable format
 function getTimeRemaining(endtime) {
 	var t = Date.parse(endtime) - Date.parse(new Date());
 	if (t <= 0) {
@@ -83,6 +88,7 @@ function getTimeRemaining(endtime) {
 	};
 }
 
+//Set the time interval and time remaining for displaying
 function initializeClock(id, endtime) {
 	var clock = document.getElementById(id);
 	var timeinterval = setInterval(function() {
@@ -102,17 +108,28 @@ function initializeClock(id, endtime) {
 		// }
 	},1000);
 }
-/* End time remaining stuff */
+/** End time remaining stuff **/
 
 $(function() {
 	//File selection input
 	$('#file_name').click(function() {
 		$('#select_file').click();
 	});
-	$('#select_file').change(function() {
+	//When a file is chosen or canceled
+	$('#select_file').change(function(e) {
+		//Make sure the file isn't too large for the fs library to handle
+		var files = e.target.files;
+		if (files.length > 0 && files[0].size/1024/1024 > 100) {
+			alert('Files must be smaller than 100MB');
+			$('#select_file').val('');
+		}
+		//Show selected file name
 		var filename = $('#select_file').val().split('\\').pop().split('/').pop();
 		$('#file_name').val(filename);
 	});
+	//Allow only enter/tab key presses
+	//so they can't change file name
+	//if they could the instructions file could be empty
 	$('#file_name').keydown(function(e) {
 		if (e.which != 13 && e.which != 9)
 			e.preventDefault();
