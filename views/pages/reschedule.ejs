@@ -39,12 +39,12 @@
 				<input type='hidden' name='testtitle' id='testtitle' value='<%= test_instance.test_title %>'>
 				<div class='form-group form-group-lg'>
 					<label for='candidatename'>Candidate Name: </label>
-					<input type='text' class='form-control' name='candidatename' id='candidatename' maxlength='256' value='<%= test_instance.name %>' autofocus>
+					<input type='text' class='form-control' name='candidatename' id='candidatename' maxlength='256' value='<%= test_instance.name %>' onfocus='this.select()' autofocus>
 				</div>
 				
 				<div class='form-group form-group-lg'>
 					<label for='candidateemail'>Candidate Email: </label>
-					<input type='text' class='form-control' name='candidateemail' id='candidateemail' maxlength='256' value='<%= test_instance.email %>'>
+					<input type='text' class='form-control' name='candidateemail' id='candidateemail' maxlength='256' value='<%= test_instance.email %>' onfocus='this.select()'>
 				</div>
 				
 				<label for='starttime'>Start Date and Time:</label>

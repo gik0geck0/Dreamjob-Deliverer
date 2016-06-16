@@ -10,7 +10,8 @@ function loadTest(testtitle, testdescription) {
 }
 
 //Create a row for a test in the lower box
-function addInstance(candidate, email, title, start, end, uri) {
+function addInstance(candidate, email, title, start, end, uri, filename) {
+	console.log(filename);
 	//Date now
 	var today = new Date();
 	
@@ -28,48 +29,51 @@ function addInstance(candidate, email, title, start, end, uri) {
 	}
 	
 	//HTML for tests in tabs
-	var baseHTML = 
+	var startHTML = 
 		"<li class='list-group-item'>\
 			<div class='row'>\
 				<div class='col-sm-4 one-line-scroll'>" + candidate + email + "</div>\
 				<div class='col-sm-2 one-line-scroll'>" + title + "</div>\
 				<div class='col-sm-2 one-line'>" + startformatted + "</div>\
 				<div class='col-sm-2 one-line'>" + endformatted + "</div>\
-				<div class='col-sm-1 glyph-cell' title='Test URL'>\
-					<a href='#' data-toggle='popover' data-placement='auto left' title='Click to copy URL' data-content='" + hostURL + testURL + uri + "'>\
-						<span class='glyph glyphicon glyphicon-link'></span>\
-					</a>\
-				</div>";
-			
-	var rescheduleHTML = 
-		"<div class='col-sm-1 glyph-cell' title='Reschedule test times'>\
-			<a href='" + rescheduleURL + uri + "'>\
-				<span class='glyph glyphicon glyphicon-calendar'></span>\
-			</a>\
-		</div>";
-			
-	var downloadHTML = 
-		"<div class='col-sm-1 glyph-cell' title='Download test submission'>\
-			<a href='" + downloadURL + uri + "'>\
-				<span class='glyph glyphicon glyphicon-save'></span>\
-			</a>\
-		</div>";
+				<div class='col-sm-2' glyph-cell>\
+					<div class='row'>\
+						<div class='col-sm-4' title='Test URL'>\
+							<a href='#' data-toggle='popover' data-placement='auto left' title='Click to copy URL' data-content='" + hostURL + testURL + uri + "'>\
+								<span class='glyph glyphicon glyphicon-link'></span>\
+							</a>\
+						</div>\
+						<div class='col-sm-4 glyph-cell' title='Reschedule test times'>\
+							<a href='" + rescheduleURL + uri + "'>\
+								<span class='glyph glyphicon glyphicon-calendar'></span>\
+							</a>\
+						</div>";
+	
+	var downloadHTML =  filename == '' || filename == null ? 
+						"<div class='col-sm-4 glyph-cell' title='No submission uploaded'>\
+							<span class='glyph glyphicon glyphicon-remove'></span>\
+						</div>" : 
+						"<div class='col-sm-4 glyph-cell' title='Download test submission'>\
+							<a href='" + downloadURL + uri + "'>\
+								<span class='glyph glyphicon glyphicon-save'></span>\
+							</a>\
+						</div>";
 		
-	var endHTML = "</div></li>";
+	var endHTML = "</div></div></div></li>";
 	
 	//Add scheduled test
 	if (start > today) {
-		$('#scheduled-tests').append(baseHTML + rescheduleHTML + endHTML);
+		$('#scheduled-tests').append(startHTML + endHTML);
 	}
 	
 	//Add in-progress test
 	if (start < today && end > today) {
-		$('#in-progress-tests').append(baseHTML + rescheduleHTML + endHTML);
+		$('#in-progress-tests').append(startHTML + endHTML);
 	}
 	
 	//Add finished test
 	if (end < today) {
-		$('#finished-tests').append(baseHTML + downloadHTML + endHTML);
+		$('#finished-tests').append(startHTML + downloadHTML + endHTML);
 	}
 }
 

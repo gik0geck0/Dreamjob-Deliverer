@@ -29,12 +29,12 @@
 				<input type='hidden' name='testtitle' id='testtitle' value='<%= test_title %>'>
 				<div class='form-group form-group-lg'>
 					<label for='candidatename'>Candidate Name: </label>
-					<input type='text' class='form-control' name='candidatename' id='candidatename' maxlength='256' autofocus>
+					<input type='text' class='form-control' name='candidatename' id='candidatename' maxlength='256' onfocus='this.select()' autofocus>
 				</div>
 				
 				<div class='form-group form-group-lg'>
 					<label for='candidateemail'>Candidate Email: </label>
-					<input type='text' class='form-control' name='candidateemail' id='candidateemail' maxlength='256'>
+					<input type='text' class='form-control' name='candidateemail' id='candidateemail' maxlength='256' onfocus='this.select()'>
 				</div>
 				
 				<label for='starttime'>Start Date and Time:</label>

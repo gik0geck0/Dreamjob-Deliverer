@@ -202,7 +202,7 @@ admin.get('/', function(request, response) {
 			}
 		});
 		//Query the test_instances table for everything but the file
-		client.query('SELECT name, email, test_title, start_time, end_time, url FROM test_instances ORDER BY name ASC NULLS LAST, email ASC NULLS FIRST', function(err, result) {
+		client.query('SELECT name, email, test_title, start_time, end_time, url, submission_filename FROM test_instances ORDER BY name ASC NULLS LAST, email ASC NULLS FIRST', function(err, result) {
 			done();
 			if (err) {
 				console.error(err);
@@ -319,14 +319,7 @@ admin.get('/reschedule/*', function(request, response) {
 					response.redirect(adminURL);
 				}
 				else {
-					if (new Date(inst[0].end_time) < new Date()) {
-						error_message = 'Error. That test has ended and connot be rescheduled.';
-						success = false;
-						response.redirect(adminURL);
-					}
-					else {
-						response.render('pages/reschedule', {test_instance: inst[0]});
-					}
+					response.render('pages/reschedule', {test_instance: inst[0]});
 				}
 			}
 		});

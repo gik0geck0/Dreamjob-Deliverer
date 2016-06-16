@@ -15,7 +15,7 @@
                 loadTest('<%= item.title %>', desc);
             <% }); %>
 			
-			<!-- Load test instance tab headers -->
+			<!-- Create test instance headers -->
 			var headerHTML = 
 				"<li class='list-group-item list-group-item-info'>\
 					<div class='row'>\
@@ -23,8 +23,7 @@
 						<div class='col-sm-2'>Test Title</div>\
 						<div class='col-sm-2'>Start Time</div>\
 						<div class='col-sm-2'>End Time</div>\
-						<div class='col-sm-1'></div>\
-						<div class='col-sm-1'></div>\
+						<div class='col-sm-2'></div>\
 					</div>\
 				</li>";
 			$('#scheduled-tests').append(headerHTML);
@@ -33,7 +32,7 @@
 			
 			<!-- Load all of the test instances -->
             <% test_instances_array.forEach(function(item) { %>
-                addInstance('<%= item.name %>', '<%= item.email %>', '<%= item.test_title %>', '<%= item.start_time %>', '<%= item.end_time %>', '<%= item.url %>');
+                addInstance('<%= item.name %>', '<%= item.email %>', '<%= item.test_title %>', '<%= item.start_time %>', '<%= item.end_time %>', '<%= item.url %>', '<%= item.submission_filename %>');
             <% }); %>
 			
 			<!-- Display whether the database was successfully updated or not -->
@@ -123,17 +122,48 @@
 			<div class='tab-content'>
 				<div id='scheduled-tab' class='tab-pane fade in active'>
 					<ul id='scheduled-tests' class='list-group scrolling-list'>
-						<!-- scheduled tests here -->
+						<!-- <li class='list-group-item list-group-item-info'>
+							<div class='row'>
+								<div class='col-sm-4'>Name (Email)</div>
+								<div class='col-sm-2'>Test Title</div>
+								<div class='col-sm-2'>Start Time</div>
+								<div class='col-sm-2'>End Time</div>
+								<div class='col-sm-1'></div>
+								<div class='col-sm-1'></div>
+							</div>
+						</li> -->
+						<!-- scheduled tests appear here -->
 					</ul>
 				</div>
 				<div id='in-progress-tab' class='tab-pane fade'>
 					<ul id='in-progress-tests' class='scrolling-list'>
-						<!-- in-progress tests here -->
+						<!-- <li class='list-group-item list-group-item-info'>
+							<div class='row'>
+								<div class='col-sm-4'>Name (Email)</div>
+								<div class='col-sm-2'>Test Title</div>
+								<div class='col-sm-2'>Start Time</div>
+								<div class='col-sm-2'>End Time</div>
+								<div class='col-sm-1'></div>
+								<div class='col-sm-1'></div>
+							</div>
+						</li> -->
+						<!-- in-progress tests appear here -->
 					</ul>
 				</div>
 				<div id='finished-tab' class='tab-pane fade'>
 					<ul id='finished-tests' class='scrolling-list'>
-						<!-- finished tests here -->
+						<!-- <li class='list-group-item list-group-item-info'>
+							<div class='row'>
+								<div class='col-sm-3'>Name (Email)</div>
+								<div class='col-sm-2'>Test Title</div>
+								<div class='col-sm-2'>Start Time</div>
+								<div class='col-sm-2'>End Time</div>
+								<div class='col-sm-1'></div>
+								<div class='col-sm-1'></div>
+								<div class='col-sm-1'></div>
+							</div>
+						</li> -->
+						<!-- finished tests appear here -->
 					</ul>
 				</div>
 			</div>
