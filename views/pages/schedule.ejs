@@ -10,6 +10,39 @@
 	<link rel='stylesheet' type='text/css' href='/css/bootstrap-datetimepicker.min.css'>
 	<script type='text/javascript' src='/js/bootstrap-datetimepicker.min.js'></script>
 	
+	<!-- Error handling and refilling out form -->
+	<script type='text/javascript'>
+		$(function() {
+			<!-- Refill out the form -->
+			<% if (fail_body != null) { %>
+				$('#candidatename').val('<%= fail_body.candidatename %>');
+				$('#candidateemail').val('<%= fail_body.candidateemail %>');
+				$('#starttimehidden').val('<%= fail_body.starttime %>');
+				$('#endtimehidden').val('<%= fail_body.endtime %>');
+			<% } %>
+			
+			<!-- Display whether the database was successfully updated or not -->
+			<!-- Should only ever display fails -->
+			$('#success-fail').html(
+				<% if (success != null) {
+					if (!success) { %>
+						"<div id='alert-fail' class='one-line-scroll alert alert-danger fade in'>" + 
+							"<a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>" + 
+							"<strong>Fail!</strong><br/>" + 
+							<% if (error_message != null) { %>
+								"<%= error_message -%><br/>" + 
+								"Please try again." + 
+							<% }
+							else { %>
+								"No error message available, please try again." + 
+							<% } %>
+						"</div>"
+					<% }
+				} %>
+			);
+		});
+	</script>
+	
 	<!-- Schedule page script -->
 	<script type='text/javascript' src='/js/schedule.js'></script>
 </head>
@@ -17,12 +50,24 @@
 <body>
 
 <div class='container-fluid'>
-	<h2 style='text-align:center; padding:10px;'><%= test_title %></h2>
+	<div class='row'>
+		<div class='col-md-1 col-lg-2'></div>
+		
+		<div class='col-sm-12 col-md-10 col-lg-8'>
+			<h2 style='text-align:center; padding:10px;'><%= test_title %></h2>
+			
+			<div id='success-fail'>
+				<!-- Success or fail alert appears here -->
+			</div>
+		</div>
+		
+		<div class='col-md-1 col-lg-2'></div>
+	</div>
 
 	<div class='row'>
-		<div class='col-md-2'></div>
+		<div class='col-md-1 col-lg-2'></div>
 
-		<div class='col-sm-12 col-md-8'>
+		<div class='col-sm-12 col-md-10 col-lg-8'>
 			<!-- Upload field and button -->
 			<form class='form' role='form' method='POST' name='test_form' id='test_form'>
 				<!-- When rendering this page, it is important to always provide a value here otherwise the database will be sad -->
@@ -39,12 +84,12 @@
 				
 				<label for='starttime'>Start Date and Time:</label>
 				<div id='starttime'></div>
-				<input type='hidden' name='starttime' id='starttimehidden' value='' />
+				<input type='hidden' name='starttime' id='starttimehidden' />
 				<br/>
 				
 				<label for='endtime'>End Date and Time:</label>
 				<div id='endtime'></div>
-				<input type='hidden' name='endtime' id='endtimehidden' value='' />
+				<input type='hidden' name='endtime' id='endtimehidden' />
 				<br/>
 				
 				<div class='btn-group btn-group-justified'>
@@ -58,7 +103,7 @@
 			</form>
 		</div>
 
-		<div class='col-md-2'></div>
+		<div class='col-md-1 col-lg-2'></div>
 	</div>
 	
 </div>

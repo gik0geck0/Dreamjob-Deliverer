@@ -21,6 +21,8 @@ var success_title = null;
 var success_url = null;
 var success_filename = null;
 var error_message = null;
+var fail_body = null;
+//These could also be done using session cookies
 
 //set up support for handling post requests
 var bodyParser = require('body-parser');
@@ -130,15 +132,15 @@ test.post('/*', upload.single('select_file'), function(request, response, next) 
 					done();
 					if (err) {
 						console.error(err);
-						error_message = err;
+						error_message = err.detail;
 						success = false;
-						// success_title = test_name;
 						response.redirect('#');
 					}
 					else { 
                         console.log('removing file from uploads');
 						//first unlink/remove the file we added to uploads/
 						fs.unlink(request.file.path);
+						
 						//then redirect back to the test page
 						success = true;
 						success_filename = test_filename;
@@ -225,7 +227,16 @@ admin.get('/', function(request, response) {
 
 //create page get method
 admin.get('/create', function(request, response) {
-	response.render('pages/create');
+	var current_success = success;
+	success = null;
+	
+	var current_fail_body = fail_body;
+	fail_body = null;
+	
+	var current_error_message = error_message;
+	error_message = null;
+	
+	response.render('pages/create', {success: current_success, error_message: current_error_message, fail_body: current_fail_body});
 });
 
 //create page post method
@@ -252,14 +263,15 @@ admin.post('/create', upload.single('select_file'), function(request, response, 
 					done();
 					if (err) {
 						console.error(err);
-						error_message = err;
+						error_message = err.detail;
 						success = false;
-						// success_title = test_name;
-						response.redirect(adminURL);
+						fail_body = request.body;
+						response.redirect(createURL);
 					}
 					else { 
 						//first unlink/remove the file we added to uploads/
 						fs.unlink(request.file.path);
+						
 						//then redirect back to the admin page
 						success = true;
 						success_title = test_name;
@@ -272,7 +284,44 @@ admin.post('/create', upload.single('select_file'), function(request, response, 
 
 //schedule page get method
 admin.get('/schedule', function(request, response) {
-	response.render('pages/schedule', {test_title: request.query.testname});
+	var current_success = success;
+	success = null;
+	
+	var current_fail_body = fail_body;
+	fail_body = null;
+	
+	var current_error_message = error_message;
+	error_message = null;
+	
+	var test_title = request.query.testname;
+	
+	pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+		if (err) {
+			return console.error(err);
+		}
+		//Query tests table for test_title
+		client.query('SELECT title FROM tests WHERE title = $1', [test_title], function(err, result) {
+			done();
+			if (err) {
+				console.error(err);
+					error_message = err.detail;
+					success = false;
+					response.redirect(adminURL);
+			}
+			else {
+				var inst = result.rows;
+				if (inst.length < 1) {
+					error_message = 'Error scheduling test. There is no test titled ' + test_title;
+					success = false;
+					response.redirect(adminURL);
+				}
+				else {
+					response.render('pages/schedule', {test_title: test_title, success: current_success, error_message: current_error_message, fail_body: current_fail_body});
+				}
+			}
+		});
+	});
+	
 });
 
 //schedule page post method
@@ -288,12 +337,21 @@ admin.post('/schedule', function(request, response, next) {
     var recursion_limit = 5;
     success_url = request.headers.origin + testURL;
     //call to the function preforming the query
-    scheduleSubmission(response, candidate_name, candidate_email, start_time, end_time, test_name, recursion_limit);
+    scheduleSubmission(request, response, candidate_name, candidate_email, start_time, end_time, test_name, recursion_limit);
     
 });
 
 //reschedule page get method
 admin.get('/reschedule/*', function(request, response) {
+	var current_success = success;
+	success = null;
+	
+	var current_fail_body = fail_body;
+	fail_body = null;
+	
+	var current_error_message = error_message;
+	error_message = null;
+	
 	//test_url is everything after /reschedule/
 	var test_url = request.url.substring(12);
 	
@@ -306,9 +364,8 @@ admin.get('/reschedule/*', function(request, response) {
 			done();
 			if (err) {
 				console.error(err);
-					error_message = err;
+					error_message = err.detail;
 					success = false;
-					// success_title = test_name;
 					response.redirect(adminURL);
 			}
 			else {
@@ -319,7 +376,7 @@ admin.get('/reschedule/*', function(request, response) {
 					response.redirect(adminURL);
 				}
 				else {
-					response.render('pages/reschedule', {test_instance: inst[0]});
+					response.render('pages/reschedule', {test_instance: inst[0], success: current_success, error_message: current_error_message, fail_body: current_fail_body});
 				}
 			}
 		});
@@ -346,10 +403,10 @@ admin.post('/reschedule/*', function(request, response, next) {
 				done();
 				if (err) {
 					console.error(err);
-					error_message = err;
+					error_message = err.detail;
 					success = false;
-					// success_title = test_name;
-					response.redirect(adminURL);
+					fail_body = request.body;
+					response.redirect(rescheduleURL);
 				}
 				else {
 					//then redirect back to the admin page
@@ -376,9 +433,8 @@ admin.get('/view', function(request, response, next) {
 				done();
 				if (err) {
 					console.error(err);
-					error_message = err;
+					error_message = err.detail;
 					success = false;
-					// success_title = test_name;
 					response.redirect(adminURL);
 				}
 				else {
@@ -412,9 +468,8 @@ admin.get('/download/*', function(request, response, next) {
 				done();
 				if (err) {
 					console.error(err);
-					error_message = err;
+					error_message = err.detail;
 					success = false;
-					// success_title = test_name;
 					response.redirect(adminURL);
 				}
 				else {
@@ -425,7 +480,6 @@ admin.get('/download/*', function(request, response, next) {
 					}
 					else {
 						response.setHeader('Content-disposition', 'inline; filename="' + result.rows[0].submission_filename + '"');
-						// response.setHeader('Content-type', 'application/pdf');
 						response.send(result.rows[0].latest_submission);
 					}
 				}
@@ -445,19 +499,16 @@ app.listen(app.get('port'), function() {
 
 
 /*
-    Functions used in GET and POST methods above
+    Functions used in above GET and POST methods
 */
 
 //This function tries to create a unique url then inserts a new scheduled test instance into our database
 //If it fails to create a unique url it recursively calls its self again. Doing so inside the query ensures async execution
 //There is a limit variable in case the query fails for a different reason and gets stuck recursively calling itself
-function scheduleSubmission(response, candidate_name, candidate_email, start_time, end_time, test_name, recursion_limit)
-{
+function scheduleSubmission(request, response, candidate_name, candidate_email, start_time, end_time, test_name, recursion_limit) {
     //Using crypto for the url should always result in a unique base64 string
 	//190 bytes results in 256 char string
-    var test_url = crypto.pseudoRandomBytes(190).toString('base64')
-		.replace(/\//g,'_').replace(/\+/g,'-');
-
+    var test_url = crypto.pseudoRandomBytes(190).toString('base64').replace(/\//g,'_').replace(/\+/g,'-');
     
     pg.connect(process.env.DATABASE_URL, function(err, client, done) {
 		if (err) {
@@ -468,19 +519,17 @@ function scheduleSubmission(response, candidate_name, candidate_email, start_tim
 			function(err, result) {
 				done();
 				if (err) {
-					console.error(err);
-					error_message = err;
-					success = false;
-                    
                     //If we have not hit the recursion limit, and we failed, try again. Otherwise, send response
-                    if(recursion_limit < 1)
-                    {
-                    	response.redirect(adminURL);
+                    if(recursion_limit < 1) {
+						console.error(err);
+						error_message = err.detail;
+						success = false;
+						fail_body = request.body;
+                    	response.redirect(scheduleURL + '?testname=' + test_name);
                     }
-                    else
-                    {   
+                    else {   
                         // reduce the recursion limit!
-                        scheduleSubmission(candidate_name, candidate_email, start_time, end_time, test_name, recursion_limit - 1); 
+                        scheduleSubmission(request, response, candidate_name, candidate_email, start_time, end_time, test_name, recursion_limit - 1); 
                     }
 				}
 				else {

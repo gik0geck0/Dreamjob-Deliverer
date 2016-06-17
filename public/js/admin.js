@@ -11,7 +11,6 @@ function loadTest(testtitle, testdescription) {
 
 //Create a row for a test in the lower box
 function addInstance(candidate, email, title, start, end, uri, filename) {
-	console.log(filename);
 	//Date now
 	var today = new Date();
 	
@@ -32,8 +31,8 @@ function addInstance(candidate, email, title, start, end, uri, filename) {
 	var startHTML = 
 		"<li class='list-group-item'>\
 			<div class='row'>\
-				<div class='col-sm-4 one-line-scroll'>" + candidate + email + "</div>\
-				<div class='col-sm-2 one-line-scroll'>" + title + "</div>\
+				<div class='col-sm-3 one-line-scroll'>" + candidate + email + "</div>\
+				<div class='col-sm-3 one-line-scroll'>" + title + "</div>\
 				<div class='col-sm-2 one-line'>" + startformatted + "</div>\
 				<div class='col-sm-2 one-line'>" + endformatted + "</div>\
 				<div class='col-sm-2' glyph-cell>\
@@ -52,14 +51,19 @@ function addInstance(candidate, email, title, start, end, uri, filename) {
 	var downloadHTML =  filename == '' || filename == null ? 
 						"<div class='col-sm-4 glyph-cell' title='No submission uploaded'>\
 							<span class='glyph glyphicon glyphicon-remove'></span>\
-						</div>" : 
-						"<div class='col-sm-4 glyph-cell' title='Download test submission'>\
+						</div>" 
+						: 
+						"<div class='col-sm-4 glyph-cell' title='" + filename + "'>\
 							<a href='" + downloadURL + uri + "'>\
 								<span class='glyph glyphicon glyphicon-save'></span>\
 							</a>\
 						</div>";
 		
-	var endHTML = "</div></div></div></li>";
+	var endHTML = 
+					"</div>\
+				</div>\
+			</div>\
+		</li>";
 	
 	//Add scheduled test
 	if (start > today) {

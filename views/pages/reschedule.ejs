@@ -19,6 +19,41 @@
 		var init_end = new Date('<%= test_instance.end_time %>');
 	</script>
 	
+	<!-- Error handling and refilling out form -->
+	<script type='text/javascript'>
+		$(function() {
+			<!-- Refill out the form in case of failure -->
+			<% if (fail_body != null) { %>
+				init_name = <%= fail_body.candidatename %>';
+				init_email = '<%= fail_body.candidateemail %>';
+				init_start = new Date('<%= fail_body.starttime %>');
+				init_end = new Date('<%= fail_body.endtime %>');
+			<% } %>
+			$('#candidatename').val(init_name);
+			$('#candidateemail').val(init_email);
+			
+			<!-- Display whether the database was successfully updated or not -->
+			<!-- Should only ever display fails -->
+			$('#success-fail').html(
+				<% if (success != null) {
+					if (!success) { %>
+						"<div id='alert-fail' class='one-line-scroll alert alert-danger fade in'>" + 
+							"<a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>" + 
+							"<strong>Fail!</strong><br/>" + 
+							<% if (error_message != null) { %>
+								"<%= error_message -%><br/>" + 
+								"Please try again." + 
+							<% }
+							else { %>
+								"No error message available, please try again." + 
+							<% } %>
+						"</div>"
+					<% }
+				} %>
+			);
+		});
+	</script>
+	
 	<!-- Reschedule page script -->
 	<!-- Must be after all other scripts -->
 	<script type='text/javascript' src='/js/reschedule.js'></script>
@@ -27,24 +62,36 @@
 <body>
 
 <div class='container-fluid'>
-	<h2 style='text-align:center; padding:10px;'><%= test_instance.test_title %></h2>
+	<div class='row'>
+		<div class='col-md-1 col-lg-2'></div>
+		
+		<div class='col-sm-12 col-md-10 col-lg-8'>
+			<h2 style='text-align:center; padding:10px;'><%= test_instance.test_title %></h2>
+			
+			<div id='success-fail'>
+				<!-- Success or fail alert appears here -->
+			</div>
+		</div>
+		
+		<div class='col-md-1 col-lg-2'></div>
+	</div>
 
 	<div class='row'>
-		<div class='col-md-2'></div>
+		<div class='col-md-1 col-lg-2'></div>
 
-		<div class='col-sm-12 col-md-8'>
+		<div class='col-sm-12 col-md-10 col-lg-8'>
 			<!-- Upload field and button -->
 			<form class='form' role='form' method='POST' name='test_form' id='test_form'>
 				<!-- When rendering this page, it is important to always provide a value here otherwise the database will be sad -->
 				<input type='hidden' name='testtitle' id='testtitle' value='<%= test_instance.test_title %>'>
 				<div class='form-group form-group-lg'>
 					<label for='candidatename'>Candidate Name: </label>
-					<input type='text' class='form-control' name='candidatename' id='candidatename' maxlength='256' value='<%= test_instance.name %>' onfocus='this.select()' autofocus>
+					<input type='text' class='form-control' name='candidatename' id='candidatename' maxlength='256' onfocus='this.select()' autofocus>
 				</div>
 				
 				<div class='form-group form-group-lg'>
 					<label for='candidateemail'>Candidate Email: </label>
-					<input type='text' class='form-control' name='candidateemail' id='candidateemail' maxlength='256' value='<%= test_instance.email %>' onfocus='this.select()'>
+					<input type='text' class='form-control' name='candidateemail' id='candidateemail' maxlength='256' onfocus='this.select()'>
 				</div>
 				
 				<label for='starttime'>Start Date and Time:</label>
@@ -68,7 +115,7 @@
 			</form>
 		</div>
 
-		<div class='col-md-2'></div>
+		<div class='col-md-1 col-lg-2'></div>
 	</div>
 	
 </div>

@@ -1,6 +1,3 @@
-var today = new Date();
-today.setUTCSeconds(0);
-
 //Make sure there is either a name or email
 function validateForm() {
     var name = $('#candidatename').val();
@@ -12,12 +9,20 @@ function validateForm() {
 }
 
 $(function() {
+	//Set default dates (right now or whatever they had previously filled out)
+	var formstart = $('#starttimehidden').val();
+	formstart = new Date(formstart == '' ? new Date() : formstart);
+	formstart.setUTCSeconds(0)
+	var formend = $('#endtimehidden').val();
+	formend = new Date(formend == '' ? new Date() : formend);
+	formend.setUTCSeconds(0);
+	
 	//Make the start time datetimepicker
 	$('#starttime').datetimepicker({
 		inline: true,
 		sideBySide: true,
 		useCurrent: false,
-		defaultDate: today,
+		defaultDate: formstart,
 		stepping: 1
 	});
 	
@@ -26,13 +31,13 @@ $(function() {
 		inline: true,
 		sideBySide: true,
 		useCurrent: false,
-		defaultDate: today,
+		defaultDate: formend,
 		stepping: 1
 	});
 	
 	//Link the pickers so that start <= end
-	$('#starttime').data('DateTimePicker').maxDate(today);
-	$('#endtime').data('DateTimePicker').minDate(today);
+	$('#starttime').data('DateTimePicker').maxDate($('#endtime').date);
+	$('#endtime').data('DateTimePicker').minDate($('#starttime').date);
 	
 	//Relink if one changes
 	$('#starttime').on('dp.change', function (e) {
@@ -45,8 +50,8 @@ $(function() {
 	});
 	
 	//Set the values of the hidden inputs
-	$('#starttimehidden').val(today.toUTCString());
-	$('#endtimehidden').val(today.toUTCString());
+	$('#starttimehidden').val(new Date($('#starttime').data('date')).toUTCString());
+	$('#endtimehidden').val(new Date($('#endtime').data('date')).toUTCString());
 	
 	//Validate on submission
 	$('#test_form').submit(function(e) {
