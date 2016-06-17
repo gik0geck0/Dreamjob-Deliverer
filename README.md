@@ -39,6 +39,7 @@ For more information about using Node.js on Heroku, see these Dev Center article
 - [Using WebSockets on Heroku with Node.js](https://devcenter.heroku.com/articles/node-websockets)
 
 ## Running Tests
+these commands should be run from within the application directory
 
 to run tests in Chrome
 $ mocha tests\chrome_tests.coffee --compilers coffee:coffee-script/register 
