@@ -39,23 +39,25 @@ For more information about using Node.js on Heroku, see these Dev Center article
 - [Using WebSockets on Heroku with Node.js](https://devcenter.heroku.com/articles/node-websockets)
 
 ## Running Tests
-these commands should be run from within the application directory
+These commands should be run from within the application directory
 
-to run tests in Chrome
+To run tests in Chrome
 ```
 $ mocha tests\chrome_tests.coffee --compilers coffee:coffee-script/register 
 ```
 
-to run tests in Firefox
+To run tests in Firefox
 ```
 $ mocha tests\firefox_tests.coffee --compilers coffee:coffee-script/register 
 ```
 
 ## Creating the Database from DreamjobDeliverer.sql
 
-Follow this sequence of commands from the application directory
-substitute dbname for the desired name of the database
-this has been confirmed to work on Windows using Windows Powershell
+Follow this sequence of commands from the application directory.
+
+Substitute dbname for the desired name of the database.
+
+This has been confirmed to work on Windows using Windows Powershell.
 
 ```
 $ psql
