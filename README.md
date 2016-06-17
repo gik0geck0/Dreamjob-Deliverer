@@ -52,9 +52,10 @@ Follow this sequence of commands from the application directory
 substitute dbname for the desired name of the database
 this has been confirmed to work on Windows using Windows Powershell
 
-...
+...sh
+$ cd Dreamjob-Deliverer
 $ psql
-# CREATE DATABASE dbname;
-# \q
+$ CREATE DATABASE dbname;
+$ \q
 $ cat DreamjobDeliverer.sql | psql dbname
 ...
