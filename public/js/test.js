@@ -1,3 +1,14 @@
+//Make sure there is a file selected
+function validateForm() {
+    var filename = $('#file_name').val();
+    var file = $('#select_file').val();
+    if ((filename == null || filename == '') && (file == null || file == '')) {
+        alert('A file must be selected');
+        return false;
+    }
+	return true;
+}
+
 /** Start PDF stuff **/
 var currPage = 1;
 var numPages = 0;
@@ -115,6 +126,7 @@ $(function() {
 	$('#file_name').click(function() {
 		$('#select_file').click();
 	});
+	
 	//When a file is chosen or canceled
 	$('#select_file').change(function(e) {
 		//Make sure the file isn't too large for the fs library to handle
@@ -127,12 +139,12 @@ $(function() {
 		var filename = $('#select_file').val().split('\\').pop().split('/').pop();
 		$('#file_name').val(filename);
 	});
-	//Allow only enter/tab key presses
-	//so they can't change file name
-	//if they could the instructions file could be empty
-	$('#file_name').keydown(function(e) {
-		if (e.which != 13 && e.which != 9)
+	
+	//Validate on submission
+	$('#test_form').submit(function(e) {
+		if (!validateForm()) {
 			e.preventDefault();
+		}
 	});
 	
 	//Start the timer until end time

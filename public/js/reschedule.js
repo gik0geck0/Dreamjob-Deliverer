@@ -6,6 +6,7 @@ function validateForm() {
         alert('A name or email must be provided');
         return false;
     }
+	return true;
 }
 
 $(function() {
@@ -46,18 +47,22 @@ $(function() {
 	$('#endtimehidden').val(init_end.toUTCString());
 	
 	//Validate on submission
-	$('#test_form').submit(validateForm);
+	$('#test_form').submit(function(e) {
+		if (!validateForm()) {
+			e.preventDefault();
+		}
+	});
 	
 	//Submit the form on enter keypress
 	$('#candidatename').keypress(function (e) {
 		if (e.which == 13) {
-			$('form#test_form').submit();
-		return false;
-	  }
+			$('#test_form').submit();
+			return false;
+		}
 	});
 	$('#candidateemail').keypress(function (e) {
 		if (e.which == 13) {
-			$('form#test_form').submit();
+			$('#test_form').submit();
 			return false;
 		}
 	});

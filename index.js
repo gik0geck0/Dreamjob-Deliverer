@@ -67,7 +67,7 @@ test.get('/', function(request, response) {
 	response.render('pages/index');
 });
 
-//test page for tests get request
+//test get method
 test.get('/*', function(request, response) {
 	//test_url is everything after last /
 	var test_url = request.url.substring(1);
@@ -107,7 +107,7 @@ test.get('/*', function(request, response) {
 	});
 });
 
-//test page post method
+//test post method
 test.post('/*', upload.single('select_file'), function(request, response, next) {
     var test_data = '\\x';
 	var test_url = request.url.substring(1);
@@ -151,7 +151,7 @@ test.post('/*', upload.single('select_file'), function(request, response, next) 
     });
 });
 
-//admin page get method
+//admin get method
 admin.get('/', function(request, response) {
     //Create variables to hold the values from the tables
     var test_array = [];
@@ -177,6 +177,20 @@ admin.get('/', function(request, response) {
 		var current_error_message = error_message;
 		error_message = null;
 		
+		//Replace wacks in title and description with wack wack
+		test_array.forEach(function(val, i) {
+			if (test_array[i].title != null) test_array[i].title = val.title.replace(/\\/g, '\\\\');
+			if (test_array[i].description != null) test_array[i].description = val.description.replace(/\\/g, '\\\\');
+		});
+		
+		//Replace wacks in name, email, title, and filename with wack wack
+		test_instances_array.forEach(function(val, i) {
+			if (test_instances_array[i].name != null) test_instances_array[i].name = val.name.replace(/\\/g, '\\\\');
+			if (test_instances_array[i].email != null) test_instances_array[i].email = val.email.replace(/\\/g, '\\\\');
+			if (test_instances_array[i].test_title != null) test_instances_array[i].test_title = val.test_title.replace(/\\/g, '\\\\');
+			if (test_instances_array[i].submission_filename != null) test_instances_array[i].submission_filename = val.submission_filename.replace(/\\/g, '\\\\');
+		});
+		
 		response.render('pages/admin', {test_array: test_array, test_instances_array: test_instances_array, success: current_success, success_title: current_success_title, success_url: current_success_url, error_message: current_error_message});
 	}
     
@@ -190,7 +204,7 @@ admin.get('/', function(request, response) {
 			done();
 			if (err) {
 				console.error(err);
-				response.send("Error " + err);
+				response.send("Error " + err.detail);
 			}
 			else { 
 				test_array = result.rows; 
@@ -208,7 +222,7 @@ admin.get('/', function(request, response) {
 			done();
 			if (err) {
 				console.error(err);
-				response.send("Error " + err); 
+				response.send("Error " + err.detail); 
 			}
 			else {
 				test_instances_array = result.rows;
@@ -225,7 +239,7 @@ admin.get('/', function(request, response) {
     });
 });
 
-//create page get method
+//create get method
 admin.get('/create', function(request, response) {
 	var current_success = success;
 	success = null;
@@ -239,7 +253,7 @@ admin.get('/create', function(request, response) {
 	response.render('pages/create', {success: current_success, error_message: current_error_message, fail_body: current_fail_body});
 });
 
-//create page post method
+//create post method
 admin.post('/create', upload.single('select_file'), function(request, response, next) {
     var test_name = request.body.title;
     var test_description = request.body.description;
@@ -282,7 +296,7 @@ admin.post('/create', upload.single('select_file'), function(request, response, 
     });
 });
 
-//schedule page get method
+//schedule get method
 admin.get('/schedule', function(request, response) {
 	var current_success = success;
 	success = null;
@@ -324,7 +338,7 @@ admin.get('/schedule', function(request, response) {
 	
 });
 
-//schedule page post method
+//schedule post method
 admin.post('/schedule', function(request, response, next) {
     //get all of the form values
     var candidate_name = request.body.candidatename == '' ? null : request.body.candidatename;
@@ -341,7 +355,7 @@ admin.post('/schedule', function(request, response, next) {
     
 });
 
-//reschedule page get method
+//reschedule get method
 admin.get('/reschedule/*', function(request, response) {
 	var current_success = success;
 	success = null;
@@ -376,6 +390,10 @@ admin.get('/reschedule/*', function(request, response) {
 					response.redirect(adminURL);
 				}
 				else {
+					//Replace wack in name and email with wack wack
+					if (inst[0].name != null) inst[0].name = inst[0].name.replace(/\\/g, '\\\\');
+					if (inst[0].email != null) inst[0].email = inst[0].email.replace(/\\/g, '\\\\');
+					
 					response.render('pages/reschedule', {test_instance: inst[0], success: current_success, error_message: current_error_message, fail_body: current_fail_body});
 				}
 			}
@@ -383,7 +401,7 @@ admin.get('/reschedule/*', function(request, response) {
 	});
 });
 
-//reschedule page post method
+//reschedule post method
 admin.post('/reschedule/*', function(request, response, next) {
 	//test_url is everything after /reschedule/
 	var test_url = request.url.substring(12);
@@ -419,7 +437,7 @@ admin.post('/reschedule/*', function(request, response, next) {
     });
 });
 
-//view page get method
+//view get method
 admin.get('/view', function(request, response, next) {
 	test_title = request.query.testname;
 	
@@ -453,7 +471,7 @@ admin.get('/view', function(request, response, next) {
     });
 });
 
-//download page get method
+//download get method
 admin.get('/download/*', function(request, response, next) {
 	//test_url is everything after /download/
 	var test_url = request.url.substring(10);

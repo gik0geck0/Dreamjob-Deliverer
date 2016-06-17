@@ -6,6 +6,7 @@ function validateForm() {
         alert('A name or email must be provided');
         return false;
     }
+	return true;
 }
 
 $(function() {
@@ -55,7 +56,7 @@ $(function() {
 	
 	//Validate on submission
 	$('#test_form').submit(function(e) {
-		if (!validateForm) {
+		if (!validateForm()) {
 			e.preventDefault();
 		}
 	});
