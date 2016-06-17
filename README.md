@@ -49,11 +49,14 @@ $ mocha tests\firefox_tests.coffee --compilers coffee:coffee-script/register
 
 ## Creating the Database from DreamjobDeliverer.sql
 
-Follow this sequence of commands from the application directory substituting dbname for the desired name of the database
+Follow this sequence of commands from the application directory
+substitute dbname for the desired name of the database
 this has been confirmed to work on Windows using Windows Powershell
 
-user $ psql
-user=# CREATE DATABASE dbname;
-user=# \q
-user $ cat DreamjobDeliverer.sql | psql dbname
-
+...sh
+$ cd Dreamjob-Deliverer
+$ psql
+$ CREATE DATABASE dbname;
+$ \q
+$ cat DreamjobDeliverer.sql | psql dbname
+...
