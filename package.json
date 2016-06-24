@@ -25,7 +25,9 @@
     "passport-forcedotcom": "0.1.4",
     "https": "1.0.0",
     "cookie-session": "2.0.0-alpha.1",
-    "cookie-parser": "1.4.3"
+    "cookie-parser": "1.4.3",
+    "body-parser": "1.15.2",
+    "morgan": "1.7.0"
   },
   "repository": {
     "type": "git",
