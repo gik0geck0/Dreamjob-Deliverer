@@ -68,7 +68,7 @@ passport.use(new ForceDotComStrategy({
   clientID: process.env.OAUTH_ID,
   clientSecret: process.env.OAUTH_SECRET,
   scope: ['id'],
-  callbackURL: 'https://mbuland-wsl.internal.salesforce.com:5001/admin/oauth/forcedotcom/callback'
+  callbackURL: 'https://polar-cove-10019.herokuapp.com/admin/oauth/forcedotcom/callback'
 }, function verify(token, refreshToken, profile, done) {
   console.log("Logged in with profile: " + profile);
   return done(null, profile);
@@ -592,13 +592,21 @@ app.get('/*', function (req, res) {
 
 
 // Start the HTTPS Server
+var httpPort = (process.env.PORT || 5000)
+var http = require('http');
+
+http.createServer(sslOpts, app).listen(httpsPort, function() {
+    console.log('Node app is running on port', httpsPort);
+});
+
+var httpsPort = (process.env.HTTPS_PORT || 5001)
 var https = require('https');
 var privateKey  = fs.readFileSync('sslcert/server.key', 'utf8');
 var certificate = fs.readFileSync('sslcert/server.crt', 'utf8');
 var sslOpts = { key: privateKey, cert: certificate};
 
-https.createServer(sslOpts, app).listen(5001, function() {
-    console.log('Node app is running on port', 5001);
+https.createServer(sslOpts, app).listen(httpsPort, function() {
+    console.log('Node app is running on port', httpsPort);
 });
 
 
